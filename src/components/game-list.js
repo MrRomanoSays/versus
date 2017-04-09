@@ -81,11 +81,11 @@ const GameList = function (props) {
       <Header
         headline="Current Games"
       />
-      <div>
-        <ul>
-          {map(gameToListView)(props.allGames)}
-        </ul>
-      </div>
+        <div>
+          <ul>
+            {map(gameToListView)(props.allGames)}
+          </ul>
+        </div>
     </div>
   )
 }

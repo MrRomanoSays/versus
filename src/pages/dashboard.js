@@ -7,6 +7,7 @@ import Header from '../components/header'
 import GameList from '../components/game-list'
 import LocationList from '../components/location-list'
 
+
 const Dashboard = function (props) {
   return (
     <BrowserRouter>
@@ -21,6 +22,9 @@ const Dashboard = function (props) {
         <GameList
           allGames={props.games}
         />
+
+    
+
       </div>
     </BrowserRouter>
   )

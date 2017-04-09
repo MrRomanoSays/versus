@@ -11,7 +11,13 @@ const SET_GAME_SPORT="SET_GAME_SPORT"
 const SET_GAME_LOCATION="SET_GAME_LOCATION"
 const SET_GAME_MIN_PLAYERS="SET_GAME_MIN_PLAYERS"
 const SET_GAME_MAX_PLAYERS="SET_GAME_MAX_PLAYERS"
-const SET_GAME_PREFERRED_SKILL_LEVELS = "SET_GAME_PREFERRED_SKILL_LEVELS"
+const SET_GAME_PREFERRED_SKILL_LEVELS="SET_GAME_PREFERRED_SKILL_LEVELS"
+const MIN_PLAYERS_INCREMENT="MIN_PLAYERS_INCREMENT"
+const MIN_PLAYERS_DECREMENT="MIN_PLAYERS_DECREMENT"
+const MAX_PLAYERS_INCREMENT="MAX_PLAYERS_INCREMENT"
+const MAX_PLAYERS_DECREMENT="MAX_PLAYERS_DECREMENT"
+const SET_GAME_EQUIPMENT_INFO="SET_GAME_EQUIPMENT_INFO"
+const SET_GAME_MORE_INFO="SET_GAME_MORE_INFO"
 
 const locationDocuments = [{
   name: "Haut Gap Recreation Complex",
@@ -209,16 +215,15 @@ const game = (
     sport: "",
     gameCreator: "",
     preferredContact: "",
-    gameLocation: "",
+    gameLocation: {},
     dateOfGame: "",
     startTime: "",
     endTime: "",
     cancellationDeadline: "",
-    minPlayers: "",
-    maxPlayers: "",
+    minPlayers: 2,
+    maxPlayers: 2,
     preferredSkillLevels: [],
-    equipmentProvided: [],
-    equipmentNeeded: "",
+    equipmentInfo: "",
     moreInfo: "",
     currentPlayers: []
   },
@@ -230,11 +235,23 @@ const game = (
     case SET_GAME_LOCATION:
       return merge(state, {gameLocation: action.payload })
     case SET_GAME_MIN_PLAYERS:
-      return merge(state, {minPlayers: action.payload })
+      return merge(state, {minPlayers: action.payload})
     case SET_GAME_MAX_PLAYERS:
       return merge(state, {maxPlayers: action.payload })
+    case MIN_PLAYERS_INCREMENT:
+      return merge(state, {minPlayers: state.minPlayers + 1 })
+    case MIN_PLAYERS_DECREMENT:
+      return merge(state, {minPlayers: state.minPlayers - 1 })
+    case MAX_PLAYERS_INCREMENT:
+      return merge(state, {maxPlayers: state.maxPlayers + 1 })
+    case MAX_PLAYERS_DECREMENT:
+      return merge(state, {maxPlayers: state.maxPlayers - 1 })
     case SET_GAME_PREFERRED_SKILL_LEVELS:
       return merge(state, {preferredSkillLevels: action.payload })
+    case SET_GAME_EQUIPMENT_INFO:
+      return merge(state, {equipmentInfo: action.payload})
+    case SET_GAME_MORE_INFO:
+      return merge(state, {moreInfo: action.payload})
     case RESET_GAME:
       return state
     default:

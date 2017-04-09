@@ -1,26 +1,27 @@
 import React from 'react'
-import { map } from 'ramda'
+import { map, filter, compose, contains, toLower, length } from 'ramda'
 
 import Header from './header'
 import ButtonList from './button-list'
 
 const LocationList = function (props) {
+
+
+  const locationBySport = function (location) {
+    return contains(toLower(props.game), location.sports)
+  }
+
+
   const locationToListView = function (location) {
     return (
-      <li className="list pb4 pr3" key={location.name}>
-        <div className={`cf avenir bt b--black-60 bw1 ${props.gameLocation === location.name && 'bg-light-blue'}`}
-        onClick={e => props.setLocation(location.name)}
+      <li className="list pb4" key={location.name}>
+        <div className={`cf avenir bt b--black-60 bw1 ${props.gameLocation === location && 'bg-light-blue'}`}
+        onClick={e => props.setLocation(location)}
         >
 
         <div className="fl w-100 ttu tracked f6 b pt3 pl3 pb3 bg-black-60 white ">
           {location.name}
         </div>
-
-
-
-
-
-
 
         <div className="fl w-100 pl3 pb1 pt2 i ">
         {`${location.streetAddress} ${location.city}, ${location.state} ${location.zipcode}`}
@@ -71,9 +72,21 @@ const LocationList = function (props) {
   }
   return (
     <div>
+      <Header
+        headline={`Locations Supporting ${props.game} (${compose(
+        length(),
+        map(locationToListView),
+        filter(locationBySport)
+      )(props.allLocations)})`}
+      />
 
+      <hr />
         <ul>
-          {map(locationToListView)(props.allLocations)}
+          {compose(
+            map(locationToListView),
+            filter(locationBySport)
+          )
+            (props.allLocations)}
         </ul>
 
     </div>
