@@ -22,6 +22,7 @@ import volleyball from '../images/icons/volleyball.png'
 
 import PickDay from '../components/grid5-2'
 import DatePicker from '../components/date-picker'
+import ShowDate from '../components/show-date'
 
 import moment from 'moment'
 
@@ -91,9 +92,16 @@ const CreateGame = function (props) {
         <View title="Pick Day and Time"
           headline="When would you like to play?"
 
-          body={<DatePicker
-            handleChange={props.handleDateChange}
-            withPortal/>}
+          body={
+
+            <ShowDate
+              calendar=
+                {<DatePicker
+                handleChange={props.handleDateChange}
+                />}
+              currentGameDate=
+                {props.game.dateOfGame}
+              />}
 
 
           buttonLeft={<ButtonBack

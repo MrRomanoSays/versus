@@ -240,7 +240,7 @@ const game = (
       return merge(state, {gameLocation: action.payload })
 
     case SET_GAME_DATE:
-      return merge(state, {dateOfGame: moment(action.payload).format("M,D,YYYY") })
+      return merge(state, {dateOfGame: moment(action.payload).format("dddd, MMMM Do YYYY") })
 
 
     case SET_GAME_MIN_PLAYERS:

@@ -6,11 +6,15 @@ import 'react-datepicker/dist/react-datepicker.css'
 
 const Example2 = function (props) {
   return (
-    <DatePicker
+    <div className="tc">
+      <DatePicker
+
       onChange={props.handleChange}
       todayButton={"Select Today"}
-      withPortal
+      minDate={moment()}
+      inline
     />
+    </div>
   )
 }
 
