@@ -21,6 +21,12 @@ import tennis from '../images/icons/tennis.png'
 import volleyball from '../images/icons/volleyball.png'
 
 import PickDay from '../components/grid5-2'
+import DatePicker from '../components/date-picker'
+
+import moment from 'moment'
+
+
+
 
 import LocationList from '../components/location-list'
 
@@ -85,7 +91,10 @@ const CreateGame = function (props) {
         <View title="Pick Day and Time"
           headline="When would you like to play?"
 
-          body="React Time Picker Goes Here"
+          body={<DatePicker
+            handleChange={props.handleDateChange}
+            withPortal/>}
+
 
           buttonLeft={<ButtonBack
             onClick={e => props.previous('step1')}
@@ -279,6 +288,9 @@ const MapActionsToProps = function (dispatch) {
     add: (game) => dispatch({ type: "ADD", payload: game }),
     setSport: (sportName) => dispatch({ type: "SET_GAME_SPORT", payload: sportName }),
     setLocation: (locationName) => dispatch({ type: "SET_GAME_LOCATION", payload: locationName }),
+
+    handleDateChange: (date) => dispatch({ type: "SET_GAME_DATE", payload: moment(date).format() }),
+
     setMinPlayers: (numberOfPlayers) =>
     dispatch({ type: "SET_GAME_MIN_PLAYERS", payload: numberOfPlayers }),
     setMaxPlayers: (numberOfPlayers) => dispatch({ type: "SET_GAME_MAX_PLAYERS", payload: numberOfPlayers }),

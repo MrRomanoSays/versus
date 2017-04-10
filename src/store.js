@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import { createStore, combineReducers } from 'redux'
 import { append, merge } from 'ramda'
 
@@ -18,6 +20,8 @@ const MAX_PLAYERS_INCREMENT="MAX_PLAYERS_INCREMENT"
 const MAX_PLAYERS_DECREMENT="MAX_PLAYERS_DECREMENT"
 const SET_GAME_EQUIPMENT_INFO="SET_GAME_EQUIPMENT_INFO"
 const SET_GAME_MORE_INFO="SET_GAME_MORE_INFO"
+
+const SET_GAME_DATE="SET_GAME_DATE"
 
 const locationDocuments = [{
   name: "Haut Gap Recreation Complex",
@@ -234,6 +238,11 @@ const game = (
       return merge(state, {sport: action.payload })
     case SET_GAME_LOCATION:
       return merge(state, {gameLocation: action.payload })
+
+    case SET_GAME_DATE:
+      return merge(state, {dateOfGame: moment(action.payload).format("M,D,YYYY") })
+
+
     case SET_GAME_MIN_PLAYERS:
       return merge(state, {minPlayers: action.payload})
     case SET_GAME_MAX_PLAYERS:

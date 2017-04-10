@@ -6,12 +6,11 @@ import BodyText from '../components/body-text'
 import ButtonBack from '../components/button-back'
 import Home from './home'
 
-
-
 const Contact = function (props) {
   return (
 
       <div>
+        
         <ContactMeHeader />
         <Header
           headline="About This Project"
