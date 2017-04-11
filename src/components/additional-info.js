@@ -1,11 +1,15 @@
 import React from 'react'
 
-import TextInput from './text-input'
+import TextAreaInput from './text-area-input'
+import SectionHeader from './section-header'
 
 const AdditionalInfo = function (props) {
   return (
     <div>
-      <TextInput
+      <SectionHeader
+        sectionTitle="Additional Info"
+      />
+      <TextAreaInput
         label="Equipment Check"
         optional={true}
         help={null}
@@ -17,7 +21,7 @@ const AdditionalInfo = function (props) {
         onChange={props.equipmentHandleChange}
       />
 
-      <TextInput
+      <TextAreaInput
         label="More Info"
         optional={true}
         help="Do you want to tell players anything else?"

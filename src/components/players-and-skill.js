@@ -15,42 +15,22 @@ const PlayersAndSkill = function (props) {
         sectionTitle="Preferred Skill Level"
       />}
 
-<div className="w-100 vh-5 tc">
-          <div className={`v-mid dib inline-flex items-center ma3 br-100 ba b--black-10 h3 w3  ${props.skillLevel === "Beginner" && 'bg-near-white ba b--black navy '}`}
-            onClick={ e => props.setSkillLevel("Beginner")}>
 
-          </div>
-
-          <div className={`v-mid dib inline-flex items-center ma3  br-100 ba b--black-10 h3 w3   ${props.skillLevel === "Intermediate" && 'bg-near-white ba b--black navy'}`}
-            onClick={ e => props.setSkillLevel("Intermediate")}>
-
-          </div>
-
-          <div className={`avenir fw3 v-mid items-center dib inline-flex ma3 br-100 ba b--black-10 h3 w3 ${props.skillLevel === "Advanced" && 'bg-near-white ba b--black navy'}`}
-            onClick={ e => props.setSkillLevel("Advanced")}>
-            Advanced
-          </div>
-</div>
-          <div className={`avenir fw3 w-100 tc pa2 ba br2 b--black-20 ${props.skillLevel === "All Skill Levels" && 'bg-near-white ba b--black navy'}`}
-            onClick={ e => props.setSkillLevel("All Skill Levels")}>
-            All Skill Levels
-          </div>
-
-          <div className={`tr avenir fw3 mb2 mt4 pl1 w-30 bt bb br b--black-20 pa1 ${props.skillLevel === "Beginner" && 'bg-near-white bb bt br b--black navy '}`}
+          <div className={`tr avenir fw3 mb2 mt4 pl1 w-25 bt bb br b--black-20 pa1 pr3 ${props.skillLevel === "Beginner" && 'bg-near-white bb bt br b--black navy '}`}
             onClick={ e => props.setSkillLevel("Beginner")}>
             Beginner
           </div>
-          <div className={`tr avenir fw3 mb2 pl1 w-60 bt bb br b--black-20 pa1 ${props.skillLevel === "Intermediate" && 'bg-near-white bb bt br b--black navy'}`}
+          <div className={`tr avenir fw3 mb2 pl1 w-50 bt bb br b--black-20 pa1 pr3 ${props.skillLevel === "Intermediate" && 'bg-near-white bb bt br b--black navy'}`}
             onClick={ e => props.setSkillLevel("Intermediate")}>
             Intermediate
           </div>
-          <div className={`tr avenir fw3 mb2 pl1 w-90 bt bb br b--black-20 pa1 ${props.skillLevel === "Advanced" && 'bg-near-white bb bt br b--black navy'}`}
+          <div className={`tr avenir fw3 mb2 pl1 w-75 bt bb br b--black-20 pa1 pr3 ${props.skillLevel === "Advanced" && 'bg-near-white bb bt br b--black navy'}`}
             onClick={ e => props.setSkillLevel("Advanced")}>
             Advanced
           </div>
-          <div className={`tc avenir fw3 w-100 pa1 bb b--black-20 ${props.skillLevel === "All Players Welcome" && 'bg-near-white bb b--black navy'}`}
-            onClick={ e => props.setSkillLevel("All Players Welcome")}>
-            All Players Welcome
+          <div className={`tr avenir fw3 mb2 pl1 w-100 bt bb br b--black-20 pa1 pr3 ${props.skillLevel === "All Skill Levels" && 'bg-near-white bb b--black navy'}`}
+            onClick={ e => props.setSkillLevel("All Skill Levels")}>
+            All Skill Levels
           </div>
 
           {<SectionHeader

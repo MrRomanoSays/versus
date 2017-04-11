@@ -4,6 +4,7 @@ import NavBar from '../components/navigation-bar'
 import SplashPage from '../components/splash-page'
 import backgroundImage from '../images/splash-page-man.jpg'
 
+
 const Home = function (props) {
   return (
     <div>

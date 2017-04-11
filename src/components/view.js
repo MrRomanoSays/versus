@@ -5,10 +5,10 @@ import ButtonLeft from './button-back'
 const View = function (props) {
   return (
 
-      <article className="pa4 pa5-l">
+      <article className="">
 
         <navigation>
-          <div className="dt dt--fixed">
+          <div className="dt dt--fixed bg-near-white ba b--black-10">
             <div className="dtc tc">
               {props.buttonLeft}
             </div>
@@ -24,20 +24,15 @@ const View = function (props) {
           </div>
         </navigation>
 
-
-
           <header className="black-70 bt b--black-10">
             <div className="cf">
               <h1 className="fl w-100 pv0 f6 fw6 ttu tracked mb3 ">{props.headline}</h1>
             </div>
           </header>
 
-
         <section>
           {props.body}
         </section>
-
-
 
 
           <div className="db dn-s mt3 bt b--black-30">
@@ -46,24 +41,6 @@ const View = function (props) {
               </p>
           </div>
 
-
-
-          <navigation>
-            <div className="dt dt--fixed">
-              <div className="dtc tc">
-                {props.buttonLeft}
-              </div>
-
-              <div className="dtc tc">
-                {props.buttonCenter}
-              </div>
-
-              <div className="dtc tc">
-                {props.buttonRight}
-              </div>
-
-            </div>
-          </navigation>
 
       </article>
 
