@@ -3,15 +3,14 @@ import React from 'react'
 import ContactMeHeader from '../components/contact-me'
 import Header from '../components/header'
 import BodyText from '../components/body-text'
-import ButtonBack from '../components/button-back'
+import ButtonLinkBack from '../components/button-link-back'
 import Home from './home'
-
-
 
 const Contact = function (props) {
   return (
 
       <div>
+
         <ContactMeHeader />
         <Header
           headline="About This Project"
@@ -23,7 +22,7 @@ const Contact = function (props) {
         />
 
         <div className="pl4">
-          <ButtonBack
+          <ButtonLinkBack
             buttonText="Versus"
             linkUrl="/"
           />

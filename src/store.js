@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 import { createStore, combineReducers } from 'redux'
 import { append, merge } from 'ramda'
 
@@ -18,6 +20,22 @@ const MAX_PLAYERS_INCREMENT="MAX_PLAYERS_INCREMENT"
 const MAX_PLAYERS_DECREMENT="MAX_PLAYERS_DECREMENT"
 const SET_GAME_EQUIPMENT_INFO="SET_GAME_EQUIPMENT_INFO"
 const SET_GAME_MORE_INFO="SET_GAME_MORE_INFO"
+
+const SET_GAME_DATE="SET_GAME_DATE"
+const SET_GAME_TIME="SET_GAME_TIME"
+const SET_GAME_CANCELLATION_DEADLINE="SET_GAME_CANCELLATION_DEADLINE"
+
+const SET_PLAYER_FIRST_NAME="SET_PLAYER_FIRST_NAME"
+const SET_PLAYER_LAST_NAME="SET_PLAYER_LAST_NAME"
+const SET_PLAYER_EMAIL="SET_PLAYER_EMAIL"
+const SET_PLAYER_PHONE="SET_PLAYER_PHONE"
+const SET_PLAYER_STREET_ADDRESS="SET_PLAYER_STREET_ADDRESS"
+const SET_PLAYER_CITY="SET_PLAYER_CITY"
+const SET_PLAYER_STATE="SET_PLAYER_STATE"
+const SET_PLAYER_ZIPCODE="SET_PLAYER_ZIPCODE"
+const SET_PLAYER_GENDER="SET_PLAYER_GENDER"
+const SET_PLAYER_AGE="SET_PLAYER_AGE"
+const SET_PLAYER_BIO="SET_PLAYER_BIO"
 
 const locationDocuments = [{
   name: "Haut Gap Recreation Complex",
@@ -234,6 +252,14 @@ const game = (
       return merge(state, {sport: action.payload })
     case SET_GAME_LOCATION:
       return merge(state, {gameLocation: action.payload })
+
+    case SET_GAME_DATE:
+      return merge(state, {dateOfGame: moment(action.payload).format("dddd, MMMM Do YYYY") })
+    case SET_GAME_TIME:
+      return merge(state, {startTime: action.payload })
+    case SET_GAME_CANCELLATION_DEADLINE:
+      return merge(state, {cancellationDeadline: action.payload })
+
     case SET_GAME_MIN_PLAYERS:
       return merge(state, {minPlayers: action.payload})
     case SET_GAME_MAX_PLAYERS:
@@ -248,6 +274,7 @@ const game = (
       return merge(state, {maxPlayers: state.maxPlayers - 1 })
     case SET_GAME_PREFERRED_SKILL_LEVELS:
       return merge(state, {preferredSkillLevels: action.payload })
+
     case SET_GAME_EQUIPMENT_INFO:
       return merge(state, {equipmentInfo: action.payload})
     case SET_GAME_MORE_INFO:
@@ -258,6 +285,54 @@ const game = (
       return state
   }
 }
+
+const player = (
+  state = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    streetAddress: "",
+    city: "",
+    state: "",
+    zipcode: "",
+    gender: "",
+    age: "",
+    bio: "",
+    gamesCreated: [],
+    gamesJoined: [],
+    previousGames: []
+  },
+  action
+) => {
+  switch (action.type) {
+    case SET_PLAYER_FIRST_NAME:
+      return merge(state, {firstName: action.payload })
+    case SET_PLAYER_LAST_NAME:
+      return merge(state, {lastName: action.payload })
+    case SET_PLAYER_EMAIL:
+      return merge(state, {email: action.payload })
+    case SET_PLAYER_PHONE:
+      return merge(state, {phone: action.payload })
+    case SET_PLAYER_STREET_ADDRESS:
+      return merge(state, {streetAddress: action.payload })
+    case SET_PLAYER_CITY:
+      return merge(state, {city: action.payload })
+    case SET_PLAYER_STATE:
+      return merge(state, {state: action.payload })
+    case SET_PLAYER_ZIPCODE:
+      return merge(state, {zipcode: action.payload })
+    case SET_PLAYER_GENDER:
+      return merge(state, {gender: action.payload })
+    case SET_PLAYER_AGE:
+      return merge(state, {age: action.payload })
+    case SET_PLAYER_BIO:
+      return merge(state, {bio: action.payload })
+    default:
+      return state
+    }
+}
+
 
 const view = (
   state = "step1", action) => {
@@ -278,7 +353,8 @@ const store = createStore(combineReducers({
   view: view,
   game: game,
   games: games,
-  locations: locations
+  locations: locations,
+  player: player
 }))
 
 export default store

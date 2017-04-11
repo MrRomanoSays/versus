@@ -21,6 +21,14 @@ import tennis from '../images/icons/tennis.png'
 import volleyball from '../images/icons/volleyball.png'
 
 import PickDay from '../components/grid5-2'
+import DatePicker from '../components/date-picker'
+import ShowDate from '../components/show-date'
+import SetTime from '../components/time-picker'
+
+import moment from 'moment'
+
+
+
 
 import LocationList from '../components/location-list'
 
@@ -85,7 +93,39 @@ const CreateGame = function (props) {
         <View title="Pick Day and Time"
           headline="When would you like to play?"
 
-          body="React Time Picker Goes Here"
+          body={
+
+            <ShowDate
+              currentGameDate=
+                {props.game.dateOfGame}
+
+              currentGameTime=
+                {moment(`${props.game.startTime}`, `HH:mm`).format(`h:mm a`)}
+
+              cancellationDeadline=
+                {moment(`${props.game.cancellationDeadline}`, `HH:mm`).format(`h:mm a`)}
+
+              calendar=
+                {<DatePicker
+                handleChange={props.setGameDate}
+                />}
+
+              gameClockStart=
+                {<SetTime
+                  selectedTime={props.game.startTime}
+                  onTimeChange={props.setGameTime}
+                />}
+
+              gameClockCancel=
+                {<SetTime
+                  selectedTime={props.game.cancellationDeadline}
+                  onTimeChange={props.setCancellationDeadline}
+                  colorPalette="dark"
+                />}
+              />
+          }
+
+
 
           buttonLeft={<ButtonBack
             onClick={e => props.previous('step1')}
@@ -279,8 +319,12 @@ const MapActionsToProps = function (dispatch) {
     add: (game) => dispatch({ type: "ADD", payload: game }),
     setSport: (sportName) => dispatch({ type: "SET_GAME_SPORT", payload: sportName }),
     setLocation: (locationName) => dispatch({ type: "SET_GAME_LOCATION", payload: locationName }),
-    setMinPlayers: (numberOfPlayers) =>
-    dispatch({ type: "SET_GAME_MIN_PLAYERS", payload: numberOfPlayers }),
+
+    setGameDate: (date) => dispatch({ type: "SET_GAME_DATE", payload: moment(date).format() }),
+    setGameTime: (time) => dispatch({ type: "SET_GAME_TIME", payload: time }),
+    setCancellationDeadline: (time) => dispatch({ type: "SET_GAME_CANCELLATION_DEADLINE", payload: time }),
+
+    setMinPlayers: (numberOfPlayers) => dispatch({ type: "SET_GAME_MIN_PLAYERS", payload: numberOfPlayers }),
     setMaxPlayers: (numberOfPlayers) => dispatch({ type: "SET_GAME_MAX_PLAYERS", payload: numberOfPlayers }),
     setSkillLevel: (skillLevel) => dispatch({ type: "SET_GAME_PREFERRED_SKILL_LEVELS", payload: skillLevel }),
     addMinPlayer: () => dispatch({ type: "MIN_PLAYERS_INCREMENT" }),
