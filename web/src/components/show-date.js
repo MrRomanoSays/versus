@@ -1,7 +1,5 @@
 import React from 'react'
 
-import moment from 'moment'
-
 const ShowDate = function (props) {
   return (
 

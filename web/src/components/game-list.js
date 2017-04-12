@@ -1,6 +1,6 @@
 import React from 'react'
 import { map } from 'ramda'
-
+import moment from 'moment'
 
 import Header from './header'
 import ButtonList from './button-list'
@@ -9,14 +9,14 @@ import ButtonList from './button-list'
 const GameList = function (props) {
   const gameToListView = function (game) {
     return (
-      <li className="list pr4 pb4" key={game.Creator+game.sport+game.startTime}>
+      <li className="list pr4 pb4" key={game.gameCreator+game.sport+game.startTime}>
         <div className="cf avenir bt b--black-60 bw1">
         <div className="fl w-80 ttu tracked f6 b pt3 pl3 pb3 bg-black-60 white ">
-          {game.sport} @ {game.gameLocation}<br />
+          {game.sport} @ {game.gameLocation.name}<br />
         </div>
         <div className="fl w-20 tc pv3">ICON</div>
         <div className="fl w-100 pl3 pb1 pt1 i link">
-          70 East Bay Charleston, SC 29403
+          {`${game.gameLocation.streetAddress} ${game.gameLocation.city}, ${game.gameLocation.state} ${game.gameLocation.zipcode}`}
         </div>
         <div className="fl w-33">
           <ButtonList
@@ -46,11 +46,14 @@ const GameList = function (props) {
         <div className="fl w-50 tc pv3">
           <div className="w-50-ns w-100 fl mb2">
             <div className="f6 fw4">Start Time</div>
-            <div className="f4 fw6">{game.startTime}</div>
+            <div className="f4 fw6">{moment(`${game.startTime}`, `HH:mm`).format(`h:mm a`)}</div>
+
           </div>
           <div className="w-50-ns w-100 fl">
             <div className="f6 fw4 ">End Time</div>
-            <div className="f4 fw6">{game.endTime}</div>
+            <div className="f4 fw6">{game.endTime ? moment(`${game.endTime}`, `HH:mm`).format(`h:mm a`) : 'Not Provided'}</div>
+
+
           </div>
         </div>
         <div className="fl w-100 w-70-ns pv2 tc">

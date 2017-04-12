@@ -36,7 +36,20 @@ import PlayersAndSkill from '../components/players-and-skill'
 
 import AdditionalInfo from '../components/additional-info'
 
+
+const postGame = (game) => {
+   return fetch(`http://localhost:8080/games`, {
+    headers: {
+      "Content-Type": "application/json"
+    },
+    method: "POST",
+    body: JSON.stringify(game)
+  })
+}
+
+
 const CreateGame = function (props) {
+
   return (
     <div>
       {equals(props.view, 'step1') && (
@@ -245,11 +258,8 @@ const CreateGame = function (props) {
             />}
             buttonRight={<ButtonForward
               buttonText="Create Game"
-              onClick= {e => {
-                props.add(props.game)
-                props.reset()
-                props.history.push('/dashboard')
-              }}
+              onClick= {
+                props.addGame(props.history, props.game)}
             />}
 
 
@@ -257,9 +267,6 @@ const CreateGame = function (props) {
 
         </View>
       )}
-
-
-
 
 
 
@@ -316,7 +323,22 @@ const MapActionsToProps = function (dispatch) {
     },
     previous: (view) => dispatch({ type: "PREVIOUS", payload: view }),
     next: (view) => dispatch({ type: "NEXT", payload: view }),
-    add: (game) => dispatch({ type: "ADD", payload: game }),
+    addGame: (history, game) => (e) => {
+      postGame(game)
+        .then(res => res.json())
+        .then(res => {
+          if (res.id) {
+            dispatch({ type: "RESET" })
+            dispatch({ type: "RESET_GAME" })
+            history.push('/dashboard')
+          } else {
+            alert('Error saving to the database.')
+          }
+        })
+        .catch(err => console.log(err.message))
+    },
+
+
     setSport: (sportName) => dispatch({ type: "SET_GAME_SPORT", payload: sportName }),
     setLocation: (locationName) => dispatch({ type: "SET_GAME_LOCATION", payload: locationName }),
 
