@@ -5,9 +5,12 @@ import { append, merge } from 'ramda'
 
 const PREVIOUS = "PREVIOUS"
 const NEXT = "NEXT"
-const ADD = "ADD"
+const ADD_GAME = "ADD_GAME"
 const RESET_GAME = "RESET_GAME"
 const RESET = "RESET"
+
+const LOAD_GAMES="LOAD_GAMES"
+const LOAD_PLAYERS="LOAD_PLAYERS"
 
 const SET_GAME_SPORT="SET_GAME_SPORT"
 const SET_GAME_LOCATION="SET_GAME_LOCATION"
@@ -20,10 +23,10 @@ const MAX_PLAYERS_INCREMENT="MAX_PLAYERS_INCREMENT"
 const MAX_PLAYERS_DECREMENT="MAX_PLAYERS_DECREMENT"
 const SET_GAME_EQUIPMENT_INFO="SET_GAME_EQUIPMENT_INFO"
 const SET_GAME_MORE_INFO="SET_GAME_MORE_INFO"
-
 const SET_GAME_DATE="SET_GAME_DATE"
 const SET_GAME_TIME="SET_GAME_TIME"
 const SET_GAME_CANCELLATION_DEADLINE="SET_GAME_CANCELLATION_DEADLINE"
+
 
 const SET_PLAYER_FIRST_NAME="SET_PLAYER_FIRST_NAME"
 const SET_PLAYER_LAST_NAME="SET_PLAYER_LAST_NAME"
@@ -211,15 +214,25 @@ const gameDocuments = [{
   }]
 
 
-const games = (state=gameDocuments, action) => {
+
+const games = (state=[], action) => {
   switch (action.type) {
-    case 'LOAD_GAMES':
-      return state
+    case LOAD_GAMES:
+      return action.payload
     default:
       return state
   }
 }
 
+
+const players = (state=[], action) => {
+  switch (action.type) {
+    case LOAD_PLAYERS:
+      return action.payload
+    default:
+      return state
+  }
+}
 
 const locations = (state=locationDocuments, action) => {
   switch (action.type) {
@@ -354,7 +367,8 @@ const store = createStore(combineReducers({
   game: game,
   games: games,
   locations: locations,
-  player: player
+  player: player,
+  players: players
 }))
 
 export default store
