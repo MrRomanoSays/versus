@@ -1,7 +1,8 @@
 import moment from 'moment'
 
-import { createStore, combineReducers } from 'redux'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
 import { append, merge } from 'ramda'
+import { authReducer, lockReducer, authListener } from './auth'
 
 const PREVIOUS = "PREVIOUS"
 const NEXT = "NEXT"
@@ -368,7 +369,21 @@ const store = createStore(combineReducers({
   games: games,
   locations: locations,
   player: player,
-  players: players
+  players: players,
+  lock: lockReducer,
+  auth: authReducer,
+  user: (state = {}, action) => {
+  switch (action.type) {
+    case 'SET_USER':
+      return action.payload
+    case 'CLEAR_USER':
+      return {}
+    default:
+      return state
+    }
+  }
 }))
+
+authListener(store.dispatch)
 
 export default store

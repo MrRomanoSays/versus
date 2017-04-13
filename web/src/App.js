@@ -10,28 +10,33 @@ import PlayerProfile from './pages/player-profile'
 import ContactMe from './pages/contact'
 import HowItWorks from './pages/how-it-works'
 
+import { connect } from 'react-redux'
 
-class App extends Component {
-  render() {
-    return (
-      <BrowserRouter>
-        <div>
-          <Route exact path="/" component={Home}/>
-          <Route exact path="/dashboard" component={Dashboard}/>
-          <Route path="/editprofile" component={PlayerProfile}/>
-          <Route path="/creategame" component={CreateGame}/>
-          <Route exact path="/about/creator" component={ContactMe}/>
-          <Route exact path="/about/versus" component={HowItWorks}/>
+const App = function (props) {
+  return (
+    <BrowserRouter>
+      <div>
+        <Route exact path="/" component={Home}/>
+        <Route exact path="/dashboard" component={Dashboard}/>
+        <Route path="/editprofile" component={PlayerProfile}/>
+        <Route path="/creategame" component={CreateGame}/>
+        <Route exact path="/about/creator" component={ContactMe}/>
+        <Route exact path="/about/versus" component={HowItWorks}/>
 
+        
 
-
-        </div>
-      </BrowserRouter>
-    )
-  }
+      </div>
+    </BrowserRouter>
+  )
 }
 
-export default App;
+
+
+const connector = connect(state => state)
+
+
+
+export default connector(App)
 
 
 // <Route className="" path="/" component={Component}/>

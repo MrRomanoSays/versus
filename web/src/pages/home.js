@@ -4,6 +4,7 @@ import NavBar from '../components/navigation-bar'
 import SplashPage from '../components/splash-page'
 import backgroundImage from '../images/splash-page-man.jpg'
 
+import { connect } from 'react-redux'
 
 const Home = function (props) {
   return (
@@ -24,9 +25,33 @@ const Home = function (props) {
         secondaryButton="Sign In"
         secondaryButtonUrl="/dashboard"
       />
+
+
+      <h1>Auth0 Example</h1>
+      {
+        props.auth
+          ? <button onClick={e => {
+            props.dispatch({type: 'CLEAR_AUTH'})
+            props.dispatch({type: 'CLEAR_USER'})
+          }}>Log out</button>
+          : <button onClick={e => props.lock.show()}>Login</button>
+      }
+      {props.auth && (
+      <div>
+        <img src={props.user.picture} />
+        <h2>Welcome {props.user.nickname}</h2>
+      </div>
+          )}
+
+
+
+
+
     </div>
 
   )
 }
 
-export default Home
+const connector = connect(state=>state)
+
+export default connector(Home)
