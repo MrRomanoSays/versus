@@ -22,10 +22,11 @@ import BasicDemographics from '../components/basic-demographics'
 import PlayerBio from '../components/player-bio'
 
 
-const postPlayer = (player) => {
+const postPlayer = (player, idToken) => {
    return fetch(`http://localhost:8080/players`, {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + idToken
     },
     method: "POST",
     body: JSON.stringify(player)
@@ -211,7 +212,7 @@ class PlayerProfile extends React.Component {
         buttonRight={<ButtonForward
           buttonText="Save Profile"
           onClick= {
-            this.props.addPlayer(this.props.history, this.props.player)}
+            this.props.addPlayer(this.props.history, this.props.player, this.props.auth.idToken)}
         />}
       >
 
@@ -252,8 +253,8 @@ const MapActionsToProps = function (dispatch) {
     },
     previous: (view) => dispatch({ type: "PREVIOUS", payload: view }),
     next: (view) => dispatch({ type: "NEXT", payload: view }),
-    addPlayer: (history, player) => (e) => {
-      postPlayer(player)
+    addPlayer: (history, player, idToken) => (e) => {
+      postPlayer(player, idToken)
         .then(res => res.json())
         .then(res => {
           if (res.id) {

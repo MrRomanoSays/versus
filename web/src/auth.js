@@ -14,7 +14,7 @@ var options = {
     labeledSubmitButton: "Ready. Set. Go!"
   },
   auth: {
-    redirectUrl: 'http://localhost:8000/dashboard',
+    redirectUrl: 'http://localhost:8000/',
     redirect: true,
     responseType: "token"
   },

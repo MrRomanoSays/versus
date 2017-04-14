@@ -12,9 +12,14 @@ import LocationList from '../components/location-list'
 
 class Dashboard extends React.Component {
   componentDidMount () {
-    fetch('http://localhost:8080/games')
+    fetch('http://localhost:8080/games', {
+      headers: {
+        Authorization: 'Bearer ' + this.props.auth.idToken
+      }
+    })
     .then(res => res.json())
     .then(games => this.props.dispatch({ type: "LOAD_GAMES", payload: games}))
+    .catch(err => console.log(err))
   }
   render () {
     return (

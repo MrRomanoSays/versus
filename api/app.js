@@ -1,7 +1,24 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config()
+}
+
 const express = require('express')
 const app = express()
 const dalModule = process.env.DAL || 'nosql';
 const dal = dalModule === 'nosql' ? 'dal.js' : 'dal-mysql.js'
+const { split } = require('ramda')
+
+const jwt = require('express-jwt')
+const cors = require('cors')
+
+app.use(cors({credentials: true}))
+
+app.use(jwt({
+  secret: process.env.AUTH0_SECRET
+}))
+
+app.get('/test', (req, res) => res.send('You are authorized!!!'))
+
 const {
     getGames,
     getGame,
@@ -39,7 +56,7 @@ const {
 
 
 
-const { split } = require('ramda')
+
 
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
@@ -48,10 +65,7 @@ app.use(bodyParser.json())
 const HTTPError = require('node-http-error')
 const port = process.env.PORT || 8082
 
-const cors = require('cors')
-app.use(cors({
-    credentials: true
-}))
+
 
 //////////////////
 /////  TESTING
