@@ -3,7 +3,7 @@ import React from 'react'
 const ButtonBack = function (props) {
   return (
     <div>
-      <div className="f6 no-underline black bg-animate hover-bg-dark-red hover-white inline-flex items-center pa2 ba border-box"
+      <div className="f6 no-underline white bg-animate hover-dark-red hover-white inline-flex items-center pa2 ba border-box"
       onClick={props.onClick}>
         <svg className="w1" data-icon="chevronLeft" viewBox="0 0 32 32" style={{fill: 'currentcolor'}}>
           <title>chevronLeft icon</title>

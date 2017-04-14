@@ -42,10 +42,8 @@ class PlayerProfile extends React.Component {
 
   <div>
     <div className="cf" style={{background: `url(${backgroundPhoto}) no-repeat center fixed`, backgroundSize: 'cover'}}>
-      <div className="fr pa3 pa4-ns bg-white black-70 measure-wide times">
-        <header className="">
-          <h3 className="f2 fw7 ttu tracked lh-title mt0 mb3 avenir">Player Profile</h3>
-        </header>
+      <div className="fr pa3 mr5-ns mt5-ns mt0-s mb7-ns  bg-white black-70 measure-wide times">
+
 
         <div className="fl w-100">
 

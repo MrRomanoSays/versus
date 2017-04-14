@@ -18,7 +18,7 @@ class Dashboard extends React.Component {
   }
   render () {
     return (
-      <BrowserRouter>
+
         <div>
           <NavBar
             link1Title="Create Game"
@@ -34,16 +34,13 @@ class Dashboard extends React.Component {
 
 
         </div>
-      </BrowserRouter>
+
     )
   }
 }
 
 
-const MapStateToProps = function (state) {
-  return state
-}
 
-const connector = connect(MapStateToProps)
+const connector = connect(state=>state)
 
 export default connector(Dashboard)

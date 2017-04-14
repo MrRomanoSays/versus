@@ -4,20 +4,15 @@ import { BrowserRouter, Link } from 'react-router-dom'
 const NavBar = function (props) {
   return (
 <div>
-<BrowserRouter>
-  <nav className="db dt-l dt-m w-100 border-box pa2 ph5-l bg-dark-red">
-    <a className="db dtc-l dtc-m v-mid mid-gray link dim w-100 w-25-l w-25-m tc tl-l mb2 mb0-l" href="#" title="Home">
-      <img src="http://tachyons.io/img/logo.jpg" className="dib w2 h2 br-100" alt="Site Name"/>
-    </a>
+  <nav className="ttu tracked avenir fw4 db dt-l dt-m w-100 border-box pa2 ph5-l bg-black">
+    <Link className="db dtc-l dtc-m v-mid mid-gray link dim w-100 w-25-l w-25-m tc tl-l mb2 mb0-l" to="/">
+      <img src="http://lorempixel.com/125/125/sports/" className="dib w2 h2 br-100" alt="Random Sport Picture"/>
+    </Link>
     <div className="db dtc-l dtc-m v-mid w-100 tc tr-l tr-m">
-      <a className="link dim near-white f6 f5-l dib mr3 mr4-l" href={props.link1Url} title={props.link1Title}>{props.link1Title}</a>
-      <a className="link dim near-white f6 f5-l dib mr3 mr4-l" href={props.link2Url} title={props.link2Title}>{props.link2Title}</a>
-      <a className="link dim near-white f6 f5-l dib mr3 mr4-l" href={props.link3Url} title={props.link3Title}>{props.link3Title}</a>
-      <a className="link dim near-white f6 f5-l dib mr3 mr4-l" href={props.link4Url} title={props.link4Title}>{props.link4Title}</a>
-      <a className="link dim near-white f6 f5-l dib mr3 mr4-l" href={props.link5Url} title={props.link5Title}>{props.link5Title}</a>
+      <Link className="link dim white-90 ba pa1 f6 f5-l dib mr3 mr4-l" to={props.link1Url}>{props.link1Title}</Link>
+      <Link className="link dim white-90 ba pa1 f6 f5-l dib mr3 mr4-l" to={props.link2Url}>{props.link2Title}</Link>
     </div>
   </nav>
-</BrowserRouter>
 </div>
   )
 }

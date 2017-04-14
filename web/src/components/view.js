@@ -8,7 +8,7 @@ const View = function (props) {
       <article className="">
 
         <navigation>
-          <div className="dt dt--fixed bg-near-white ba b--black-10">
+          <div className="dt dt--fixed bg-black pa2">
             <div className="dtc tc">
               {props.buttonLeft}
             </div>

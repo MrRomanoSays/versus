@@ -23,8 +23,6 @@ const App = function (props) {
         <Route exact path="/about/creator" component={ContactMe}/>
         <Route exact path="/about/versus" component={HowItWorks}/>
 
-        
-
       </div>
     </BrowserRouter>
   )

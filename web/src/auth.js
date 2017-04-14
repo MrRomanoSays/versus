@@ -2,10 +2,41 @@ import React from 'react'
 
 import Auth0Lock from 'auth0-lock'
 
+var options = {
+  languageDictionary: {
+    title: "Welcome to VS!",
+    loginSubmitLabel: "Ready? Set. Login!",
+    signUpSubmitLabel: "Ready? Set. Sign Up!"
+  },
+  theme: {
+    logo: 'http://saratov-room.ru/uploads/saratov/2017/04/football-player-1149178_960_720.jpg',
+    primaryColor: '#c12c2c',
+    labeledSubmitButton: "Ready. Set. Go!"
+  },
+  auth: {
+    redirectUrl: 'http://localhost:8000/dashboard',
+    redirect: true,
+    responseType: "token"
+  },
+  additionalSignUpFields: [{
+    name: "age",
+    placeholder: "How old are you?",
+    validator: function(age) {
+      return {
+         valid: age >= 18,
+         hint: "Sorry.  To help ensure player safety we require all users to be at least 18 years old."
+      };
+    }
+  }]
+}
+
 const lock = new Auth0Lock(
   process.env.REACT_APP_AUTH0_CLIENTID,
-  process.env.REACT_APP_AUTH0_DOMAIN
+  process.env.REACT_APP_AUTH0_DOMAIN,
+  options
 )
+
+
 
 export const lockReducer = (state = null, action) => {
   switch (action.type) {
