@@ -1,6 +1,6 @@
 import React from 'react'
 
-import NavBar from '../components/navigation-bar'
+import NavBarLogin from '../components/navigation-bar-login'
 import SplashPage from '../components/splash-page'
 import backgroundImage from '../images/splash-page-man.jpg'
 
@@ -11,11 +11,10 @@ const Home = function (props) {
   return (
     <div>
 
-      <NavBar
-        link1Url="/about/versus"
-        link1Title="How It Works"
-        link2Url="/about/creator"
-        link2Title="Contact"
+      <NavBarLogin
+        auth={props.auth}
+        playerAvatar={props.user.picture}
+        
       />
       <SplashPage
         backgroundImage={backgroundImage}
@@ -29,5 +28,6 @@ const Home = function (props) {
 }
 
 const connector = connect(state=>state)
+
 
 export default connector(Home)

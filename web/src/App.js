@@ -3,7 +3,6 @@ import {BrowserRouter, Link, Route} from 'react-router-dom'
 import 'tachyons/css/tachyons.css'
 
 import Home from './pages/home'
-import NavBar from './components/navigation-bar'
 import Dashboard from './pages/dashboard'
 import CreateGame from './pages/create-game'
 import PlayerProfile from './pages/player-profile'
@@ -11,6 +10,7 @@ import ContactMe from './pages/contact'
 import HowItWorks from './pages/how-it-works'
 
 import { connect } from 'react-redux'
+
 
 const App = function (props) {
   return (

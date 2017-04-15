@@ -70,7 +70,7 @@ function getPlayer(playerId, cb) {
 function addPlayer(player, cb) {
     player.type = "player"
     player.created = new Date().toISOString()
-    let newId = `player_${player.lastName.toLowerCase()}_${player.firstName.toLowerCase()}_${player.phone}`
+    let newId = `player_${player.user_id}`
     player._id = prepID(newId)
 
     db.put(player, function(err, res) {

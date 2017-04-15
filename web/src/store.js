@@ -12,6 +12,8 @@ const RESET = "RESET"
 
 const LOAD_GAMES="LOAD_GAMES"
 const LOAD_PLAYERS="LOAD_PLAYERS"
+const LOAD_PLAYER="LOAD_PLAYER"
+const SET_PLAYER_FROM_DATABASE="SET_PLAYER_FROM_DATABASE"
 
 const SET_GAME_SPORT="SET_GAME_SPORT"
 const SET_GAME_LOCATION="SET_GAME_LOCATION"
@@ -28,7 +30,7 @@ const SET_GAME_DATE="SET_GAME_DATE"
 const SET_GAME_TIME="SET_GAME_TIME"
 const SET_GAME_CANCELLATION_DEADLINE="SET_GAME_CANCELLATION_DEADLINE"
 
-
+const SET_PLAYER_USER_ID="SET_PLAYER_USER_ID"
 const SET_PLAYER_FIRST_NAME="SET_PLAYER_FIRST_NAME"
 const SET_PLAYER_LAST_NAME="SET_PLAYER_LAST_NAME"
 const SET_PLAYER_EMAIL="SET_PLAYER_EMAIL"
@@ -302,6 +304,9 @@ const game = (
 
 const player = (
   state = {
+    _id: "",
+    user_id: "",
+    type: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -320,6 +325,10 @@ const player = (
   action
 ) => {
   switch (action.type) {
+    case SET_PLAYER_FROM_DATABASE:
+      return action.payload
+    case SET_PLAYER_USER_ID:
+      return merge(state, {user_id: action.payload})
     case SET_PLAYER_FIRST_NAME:
       return merge(state, {firstName: action.payload })
     case SET_PLAYER_LAST_NAME:
@@ -342,6 +351,8 @@ const player = (
       return merge(state, {age: action.payload })
     case SET_PLAYER_BIO:
       return merge(state, {bio: action.payload })
+    case LOAD_PLAYER:
+      return action.payload
     default:
       return state
     }

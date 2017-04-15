@@ -338,7 +338,6 @@ const MapActionsToProps = function (dispatch) {
         .catch(err => console.log(err.message))
     },
 
-
     setSport: (sportName) => dispatch({ type: "SET_GAME_SPORT", payload: sportName }),
     setLocation: (locationName) => dispatch({ type: "SET_GAME_LOCATION", payload: locationName }),
 

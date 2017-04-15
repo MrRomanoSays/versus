@@ -19,7 +19,7 @@ const SplashPage = function (props) {
               props.dispatch({type: 'CLEAR_AUTH'})
               props.dispatch({type: 'CLEAR_USER'})
           }}>Log Out</a>
-          <Link className="f6 no-underline grow o-90 tc bg-dark-red white ba b--white ph3 pa3 ml3" to="/dashboard">Go To Your Dashboard</Link>
+          <Link className="f6 no-underline grow o-90 tc bg-dark-red white ba b--white ph3 pa3 ml3" to="/dashboard" onClick={e=>props.dispatch({type: 'SET_PLAYER_USER_ID', payload: props.user.user_id})}>Go To Your Dashboard</Link>
       </div>
       : <a className="f6 no-underline grow tc bg-black o-80 near-white ba o-80 b--dark-red ph3 pa3"
           onClick={e => {
