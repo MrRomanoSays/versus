@@ -10,8 +10,10 @@ var options = {
   },
   theme: {
     logo: 'http://saratov-room.ru/uploads/saratov/2017/04/football-player-1149178_960_720.jpg',
-    primaryColor: '#c12c2c',
-    labeledSubmitButton: "Ready. Set. Go!"
+    labeledSubmitButton: "Ready. Set. Go!",
+    foregroundColor: "#000000",
+    primaryColor: '#FFD700',
+    icon: 'http://saratov-room.ru/uploads/saratov/2017/04/football-player-1149178_960_720.jpg'
   },
   auth: {
     redirectUrl: 'http://localhost:8000/',

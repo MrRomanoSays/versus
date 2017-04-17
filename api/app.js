@@ -23,7 +23,7 @@ const {
     getGames,
     getGame,
     addGame,
-
+updateGame,
     getPlayers,
     getPlayer,
     addPlayer,
@@ -97,6 +97,13 @@ app.post('/games', function(req, res, next) {
     addGame(req.body, function(err, resp) {
         if (err) return next(new HTTPError(err.status, err.message, err))
         res.status(201).send(resp)
+    })
+})
+
+app.put('/games/:id', function(req, res, next) {
+    updateGame(req.body, function(err, dalResponse) {
+        if (err) return next(new HTTPError(err.status, err.messsge, err))
+        res.status(200).send(dalResponse)
     })
 })
 

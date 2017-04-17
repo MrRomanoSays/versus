@@ -37,10 +37,11 @@ import PlayersAndSkill from '../components/players-and-skill'
 import AdditionalInfo from '../components/additional-info'
 
 
-const postGame = (game) => {
+const postGame = (game, idToken) => {
    return fetch(`http://localhost:8080/games`, {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + idToken
     },
     method: "POST",
     body: JSON.stringify(game)
@@ -259,7 +260,7 @@ const CreateGame = function (props) {
             buttonRight={<ButtonForward
               buttonText="Create Game"
               onClick= {
-                props.addGame(props.history, props.game)}
+                props.addGame(props.history, props.game, props.auth.idToken)}
             />}
 
 
@@ -323,8 +324,8 @@ const MapActionsToProps = function (dispatch) {
     },
     previous: (view) => dispatch({ type: "PREVIOUS", payload: view }),
     next: (view) => dispatch({ type: "NEXT", payload: view }),
-    addGame: (history, game) => (e) => {
-      postGame(game)
+    addGame: (history, game, idToken) => (e) => {
+      postGame(game, idToken)
         .then(res => res.json())
         .then(res => {
           if (res.id) {

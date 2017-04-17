@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {BrowserRouter, Link, Route} from 'react-router-dom'
+import { BrowserRouter, Link, Route } from 'react-router-dom'
 import 'tachyons/css/tachyons.css'
 
 import Home from './pages/home'
@@ -8,9 +8,10 @@ import CreateGame from './pages/create-game'
 import PlayerProfile from './pages/player-profile'
 import ContactMe from './pages/contact'
 import HowItWorks from './pages/how-it-works'
-
+import GameView from './pages/game-view'
 import { connect } from 'react-redux'
 
+import {pathOr} from 'ramda'
 
 const App = function (props) {
   return (
@@ -22,6 +23,9 @@ const App = function (props) {
         <Route path="/creategame" component={CreateGame}/>
         <Route exact path="/about/creator" component={ContactMe}/>
         <Route exact path="/about/versus" component={HowItWorks}/>
+        <Route path="/about/game" component={GameView}/>
+
+
 
       </div>
     </BrowserRouter>

@@ -3,13 +3,12 @@ import { connect } from 'react-redux'
 import { BrowserRouter, Link } from 'react-router-dom'
 import fetch from 'isomorphic-fetch'
 
-import photo from '../images/eager-runner.jpg'
-
-import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
-
 import moment from 'moment'
 
+import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
 import Header from '../components/header'
+import ProfileQue from '../components/profile-que'
+
 import GameList from '../components/game-list'
 import LocationList from '../components/location-list'
 
@@ -54,34 +53,15 @@ class Dashboard extends React.Component {
 
         {!this.props.player._id ?
 
-          <div>
-
-
-
-
-
-          <header className="bg-gold sans-serif">
-            <div className="mw9 center pa4 pt5-ns ph7-l">
-              <h2 className="f1 f-subheadline-m f-headline-l measure-narrow lh-title mv0">
-                <span className="bg-black-90 lh-copy white pa4-l pa3 tracked-tight">{`Hey "Champ"`}</span>
-              </h2>
-              <h4 className="f3 fw1 georgia i">{`Before we go any further let's set up your player profile.`}</h4>
-                <Link to="/editprofile" className="ba b--white link pa1 f6 ttu tracked black-80">{`Edit Profile Now`}</Link>
-            </div>
-          </header>
-
-
-
-
-
-
-
-          </div>
+        <ProfileQue />
           :
           <div>
-            <h4>Welcome back {this.props.player.firstName}!</h4>
+            <h4 className="bg-black-70 white-90 pa3 athelas f3 tc tl-ns">Welcome back {this.props.player.firstName}!</h4>
               <GameList
                 allGames={this.props.games}
+                game={this.props.game}
+                loadGameToState={ (game) => (e) => this.props.dispatch({ type: "SET_GAME_ID_TO_STATE", payload: game._id })}
+
               />
           </div>
         }

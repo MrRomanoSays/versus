@@ -1,5 +1,5 @@
 import React from 'react'
-import { equals } from 'ramda'
+import { equals, toUpper, toLower, tail, head } from 'ramda'
 import { connect } from 'react-redux'
 
 import ButtonLinkBack from '../components/button-link-back'
@@ -273,13 +273,13 @@ const MapActionsToProps = function (dispatch) {
 
 
 
-    setPlayerFirstName: (firstName) => dispatch({ type: "SET_PLAYER_FIRST_NAME", payload: firstName }),
-    setPlayerLastName: (lastName) => dispatch({ type: "SET_PLAYER_LAST_NAME", payload: lastName }),
+    setPlayerFirstName: (firstName) => dispatch({ type: "SET_PLAYER_FIRST_NAME", payload: toUpper(head(toLower(firstName))) + tail(toLower(firstName)) }),
+    setPlayerLastName: (lastName) => dispatch({ type: "SET_PLAYER_LAST_NAME", payload: toUpper(head(toLower(lastName))) + tail(toLower(lastName)) }),
     setPlayerEmail: (email) => dispatch({ type: "SET_PLAYER_EMAIL", payload: email }),
     setPlayerPhone: (phone) => dispatch({ type: "SET_PLAYER_PHONE", payload: phone }),
     setPlayerStreetAddress: (streetAddress) => dispatch({ type: "SET_PLAYER_STREET_ADDRESS", payload: streetAddress }),
-    setPlayerCity: (city) => dispatch({ type: "SET_PLAYER_CITY", payload: city }),
-    setPlayerState: (state) => dispatch({ type: "SET_PLAYER_STATE", payload: state }),
+    setPlayerCity: (city) => dispatch({ type: "SET_PLAYER_CITY", payload: toUpper(head(toLower(city))) + tail(toLower(city)) }),
+    setPlayerState: (state) => dispatch({ type: "SET_PLAYER_STATE", payload: toUpper(head(toLower(state))) + tail(toLower(state)) }),
     setPlayerZipcode: (zipcode) => dispatch({ type: "SET_PLAYER_ZIPCODE", payload: zipcode }),
     setPlayerGender: (gender) => dispatch({ type: "SET_PLAYER_GENDER", payload: gender }),
     setPlayerAge: (age) => dispatch({ type: "SET_PLAYER_AGE", payload: age }),

@@ -29,8 +29,11 @@ const SET_GAME_MORE_INFO="SET_GAME_MORE_INFO"
 const SET_GAME_DATE="SET_GAME_DATE"
 const SET_GAME_TIME="SET_GAME_TIME"
 const SET_GAME_CANCELLATION_DEADLINE="SET_GAME_CANCELLATION_DEADLINE"
+const SET_GAME_FROM_DATABASE="SET_GAME_FROM_DATABASE"
+const SET_GAME_ID_TO_STATE="SET_GAME_ID_TO_STATE"
 
 const SET_PLAYER_USER_ID="SET_PLAYER_USER_ID"
+const SET_PLAYER_USER_PICTURE="SET_PLAYER_USER_PICTURE"
 const SET_PLAYER_FIRST_NAME="SET_PLAYER_FIRST_NAME"
 const SET_PLAYER_LAST_NAME="SET_PLAYER_LAST_NAME"
 const SET_PLAYER_EMAIL="SET_PLAYER_EMAIL"
@@ -246,6 +249,7 @@ const locations = (state=locationDocuments, action) => {
 
 const game = (
   state = {
+    _id: "",
     sport: "",
     gameCreator: "",
     preferredContact: "",
@@ -264,6 +268,10 @@ const game = (
   action
 ) => {
   switch (action.type) {
+    case SET_GAME_FROM_DATABASE:
+      return action.payload
+    case SET_GAME_ID_TO_STATE:
+        return merge(state, {_id: action.payload })
     case SET_GAME_SPORT:
       return merge(state, {sport: action.payload })
     case SET_GAME_LOCATION:
@@ -318,6 +326,7 @@ const player = (
     gender: "",
     age: "",
     bio: "",
+    picture: "",
     gamesCreated: [],
     gamesJoined: [],
     previousGames: []
@@ -328,7 +337,9 @@ const player = (
     case SET_PLAYER_FROM_DATABASE:
       return action.payload
     case SET_PLAYER_USER_ID:
-      return merge(state, {user_id: action.payload})
+      return merge(state, {user_id: action.payload })
+    case SET_PLAYER_USER_PICTURE:
+      return merge(state, {picture: action.payload })
     case SET_PLAYER_FIRST_NAME:
       return merge(state, {firstName: action.payload })
     case SET_PLAYER_LAST_NAME:
