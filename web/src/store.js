@@ -15,6 +15,10 @@ const LOAD_PLAYERS="LOAD_PLAYERS"
 const LOAD_PLAYER="LOAD_PLAYER"
 const SET_PLAYER_FROM_DATABASE="SET_PLAYER_FROM_DATABASE"
 
+const SET_GAME_CREATOR="SET_GAME_CREATOR"
+const SET_PREFERRED_CONTACT="SET_PREFERRED_CONTACT"
+const SET_CURRENT_PLAYER="SET_CURRENT_PLAYER"
+
 const SET_GAME_SPORT="SET_GAME_SPORT"
 const SET_GAME_LOCATION="SET_GAME_LOCATION"
 const SET_GAME_MIN_PLAYERS="SET_GAME_MIN_PLAYERS"
@@ -32,6 +36,7 @@ const SET_GAME_CANCELLATION_DEADLINE="SET_GAME_CANCELLATION_DEADLINE"
 const SET_GAME_FROM_DATABASE="SET_GAME_FROM_DATABASE"
 const SET_GAME_ID_TO_STATE="SET_GAME_ID_TO_STATE"
 
+const RESET_PLAYER="RESET_PLAYER"
 const SET_PLAYER_USER_ID="SET_PLAYER_USER_ID"
 const SET_PLAYER_USER_PICTURE="SET_PLAYER_USER_PICTURE"
 const SET_PLAYER_FIRST_NAME="SET_PLAYER_FIRST_NAME"
@@ -247,6 +252,25 @@ const locations = (state=locationDocuments, action) => {
   }
 }
 
+
+const gameInitialState = {
+    _id: "",
+    sport: "",
+    gameCreator: "",
+    preferredContact: "",
+    gameLocation: {},
+    dateOfGame: "",
+    startTime: "",
+    endTime: "",
+    cancellationDeadline: "",
+    minPlayers: 2,
+    maxPlayers: 2,
+    preferredSkillLevels: [],
+    equipmentInfo: "",
+    moreInfo: "",
+    currentPlayers: []
+}
+
 const game = (
   state = {
     _id: "",
@@ -272,6 +296,15 @@ const game = (
       return action.payload
     case SET_GAME_ID_TO_STATE:
         return merge(state, {_id: action.payload })
+
+    case SET_GAME_CREATOR:
+      return merge(state, {gameCreator: action.payload })
+    case SET_PREFERRED_CONTACT:
+      return merge(state, {preferredContact: action.payload })
+    case SET_CURRENT_PLAYER:
+      return merge(state, {currentPlayers: append(action.payload, state.currentPlayers)})
+
+
     case SET_GAME_SPORT:
       return merge(state, {sport: action.payload })
     case SET_GAME_LOCATION:
@@ -304,10 +337,31 @@ const game = (
     case SET_GAME_MORE_INFO:
       return merge(state, {moreInfo: action.payload})
     case RESET_GAME:
-      return state
+      return gameInitialState
     default:
       return state
   }
+}
+
+const playerInitialState = {
+  _id: "",
+  user_id: "",
+  type: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  streetAddress: "",
+  city: "",
+  state: "",
+  zipcode: "",
+  gender: "",
+  age: "",
+  bio: "",
+  picture: "",
+  gamesCreated: [],
+  gamesJoined: [],
+  previousGames: []
 }
 
 const player = (
@@ -334,6 +388,8 @@ const player = (
   action
 ) => {
   switch (action.type) {
+    case RESET_PLAYER:
+      return playerInitialState
     case SET_PLAYER_FROM_DATABASE:
       return action.payload
     case SET_PLAYER_USER_ID:

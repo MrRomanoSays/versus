@@ -1,9 +1,14 @@
 import React from 'react'
 import { BrowserRouter, Link } from 'react-router-dom'
 
+import { connect } from 'react-redux'
+
 import ButtonFontAwesome from './button-font-awesome'
 
 const NavBarLoggedIn = function (props) {
+
+const player = props.player
+
   return (
 
 <div>
@@ -15,7 +20,7 @@ const NavBarLoggedIn = function (props) {
         <div className="tc">
           <img src={props.playerAvatar ? `${props.playerAvatar}` : 'http://lorempixel.com/125/125/sports/'} className='ba br-100 fl w2 h2 mr2 mt1'/>
 
-          <Link to="/" className="fl mt1 mb2 link dim white-90 pa1 f6 f5-l mr2"
+          <Link to="/" className="fl mt1 mb2 link hover-dark-red white-90 pa1 f6 f5-l mr2"
               onClick={e => {
                 props.dispatch({type: 'CLEAR_AUTH'})
                 props.dispatch({type: 'CLEAR_USER'})
@@ -46,7 +51,17 @@ const NavBarLoggedIn = function (props) {
             />
           </Link>
 
-          <Link to="/creategame" className=" fr mt1 mb2 link gold hover-yellow pa1 f6 f5-l mr2">
+          <Link to="/creategame" className=" fr mt1 mb2 link gold hover-yellow pa1 f6 f5-l mr2"
+            onClick={e => {
+                props.dispatch({type: 'RESET'})
+                props.dispatch({type: 'RESET_GAME'})
+            }}
+
+
+
+
+
+          >
             <ButtonFontAwesome
               iconName="fa-plus-square-o"
               iconSize="fa-2x"
@@ -64,7 +79,9 @@ const NavBarLoggedIn = function (props) {
             />
           </Link>
 
-          <Link to="/dashboard" className=" fr mt1 mb2 link dim white-90 pa1 f6 f5-l mr2">
+          <Link to="/dashboard" className=" fr mt1 mb2 link dim white-90 pa1 f6 f5-l mr2"
+
+          >
             <ButtonFontAwesome
               iconName="fa-tachometer"
               iconSize="fa-2x"
@@ -84,7 +101,7 @@ const NavBarLoggedIn = function (props) {
             <div className="tc">
               <img src={props.playerAvatar ? `${props.playerAvatar}` : 'http://lorempixel.com/125/125/sports/'} className='ba br-100 fl w2 h2 mr2 mt1'/>
 
-              <Link to="/" className="fl mt1 mb2 link dim white-90 pa1 f6 f5-l mr2"
+              <Link to="/" className="hover-dark-red fl mt1 mb2 link white-90 pa1 f6 f5-l mr2"
                 onClick= {e => {
                   props.dispatch({type: 'CLEAR_AUTH'})
                   props.dispatch({type: 'CLEAR_USER'})
@@ -136,4 +153,6 @@ const NavBarLoggedIn = function (props) {
   )
 }
 
-export default NavBarLoggedIn
+const connector = connect(state=>state)
+
+export default connector(NavBarLoggedIn)

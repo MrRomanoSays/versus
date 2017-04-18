@@ -49,8 +49,8 @@ const View = function (props) {
 
 
 View.propTypes = {
-  onPrevious: React.PropTypes.func.isRequired,
-  onNext: React.PropTypes.func.isRequired,
+  onPrevious: React.PropTypes.func,
+  onNext: React.PropTypes.func,
   onFinish: React.PropTypes.func,
   title: React.PropTypes.string
 }

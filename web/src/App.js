@@ -5,6 +5,7 @@ import 'tachyons/css/tachyons.css'
 import Home from './pages/home'
 import Dashboard from './pages/dashboard'
 import CreateGame from './pages/create-game'
+import EditGame from './pages/edit-game'
 import PlayerProfile from './pages/player-profile'
 import ContactMe from './pages/contact'
 import HowItWorks from './pages/how-it-works'
@@ -24,6 +25,7 @@ const App = function (props) {
         <Route exact path="/about/creator" component={ContactMe}/>
         <Route exact path="/about/versus" component={HowItWorks}/>
         <Route path="/about/game" component={GameView}/>
+        <Route path="/edit/game" component={EditGame}/>
 
 
 

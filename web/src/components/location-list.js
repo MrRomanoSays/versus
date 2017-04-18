@@ -15,7 +15,7 @@ const LocationList = function (props) {
   const locationToListView = function (location) {
     return (
       <li className="list pb4" key={location.name}>
-        <div className={`cf avenir bt b--black-60 bw1 ${props.gameLocation === location && 'bg-light-blue'}`}
+        <div className={`cf avenir bt b--black-60 bw1 ${props.gameLocation === location && 'bg-light-yellow'}`}
         onClick={e => props.setLocation(location)}
         >
 

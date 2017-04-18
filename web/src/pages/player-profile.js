@@ -78,6 +78,7 @@ class PlayerProfile extends React.Component {
             buttonText="Cancel"
             onClick= {e => {
               this.props.reset()
+              this.props.resetPlayer()
               this.props.history.push('/dashboard')
             }}
             />}
@@ -125,6 +126,7 @@ class PlayerProfile extends React.Component {
         buttonText="Cancel"
         onClick= {e => {
           this.props.reset()
+          this.props.resetPlayer()
           this.props.history.push('/dashboard')
         }}
         />}
@@ -166,6 +168,7 @@ class PlayerProfile extends React.Component {
         buttonText="Cancel"
         onClick= {e => {
           this.props.reset()
+          this.props.resetPlayer()
           this.props.history.push('/dashboard')
         }}
         />}
@@ -205,6 +208,7 @@ class PlayerProfile extends React.Component {
         buttonText="Cancel"
         onClick= {e => {
           this.props.reset()
+          this.props.resetPlayer()
           this.props.history.push('/dashboard')
         }}
         />}
@@ -251,8 +255,10 @@ const MapActionsToProps = function (dispatch) {
       dispatch({ type: "RESET" })
       dispatch({ type: "RESET_PLAYER" })
     },
+    resetPlayer: () => { dispatch({ type: "RESET_PLAYER" })},
     previous: (view) => dispatch({ type: "PREVIOUS", payload: view }),
     next: (view) => dispatch({ type: "NEXT", payload: view }),
+
     addPlayer: (history, player, idToken) => (e) => {
       postPlayer(player, idToken)
         .then(res => res.json())
@@ -269,17 +275,13 @@ const MapActionsToProps = function (dispatch) {
     },
 
 
-
-
-
-
     setPlayerFirstName: (firstName) => dispatch({ type: "SET_PLAYER_FIRST_NAME", payload: toUpper(head(toLower(firstName))) + tail(toLower(firstName)) }),
     setPlayerLastName: (lastName) => dispatch({ type: "SET_PLAYER_LAST_NAME", payload: toUpper(head(toLower(lastName))) + tail(toLower(lastName)) }),
     setPlayerEmail: (email) => dispatch({ type: "SET_PLAYER_EMAIL", payload: email }),
     setPlayerPhone: (phone) => dispatch({ type: "SET_PLAYER_PHONE", payload: phone }),
     setPlayerStreetAddress: (streetAddress) => dispatch({ type: "SET_PLAYER_STREET_ADDRESS", payload: streetAddress }),
     setPlayerCity: (city) => dispatch({ type: "SET_PLAYER_CITY", payload: toUpper(head(toLower(city))) + tail(toLower(city)) }),
-    setPlayerState: (state) => dispatch({ type: "SET_PLAYER_STATE", payload: toUpper(head(toLower(state))) + tail(toLower(state)) }),
+    setPlayerState: (state) => dispatch({ type: "SET_PLAYER_STATE", payload: state }),
     setPlayerZipcode: (zipcode) => dispatch({ type: "SET_PLAYER_ZIPCODE", payload: zipcode }),
     setPlayerGender: (gender) => dispatch({ type: "SET_PLAYER_GENDER", payload: gender }),
     setPlayerAge: (age) => dispatch({ type: "SET_PLAYER_AGE", payload: age }),

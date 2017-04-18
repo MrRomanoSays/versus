@@ -1,9 +1,8 @@
 import React from 'react'
 
-import { contains, toLower, head, toUpper, tail, pathOr, map } from 'ramda'
+import { Link } from 'react-router-dom'
 
-//TODO Need to make a mapper constant for my players.  Based on...
-
+import { filter, contains, toLower, head, toUpper, tail, pathOr, map } from 'ramda'
 
 
 const GameCard = function (props) {
@@ -11,9 +10,9 @@ const GameCard = function (props) {
   const mapFunctionForCurrentPlayers = function (player) {
     return (
         <div className="dib">
-          <article className="fl mw4 mh4 center bg-white br3 pa2 ba b--black-10 hover-bg-black-80 hover-white">
+          <article className="fl mw4 mh4 center bg-white br3 pa2 ba b--black-10 hover-bg-gold hover-black">
             <div className="tc">
-              <img src={player.picture ? player.picture : "http://lorempixel.com/400/200/people"} className="br-100 w3 h3 dib ba b--black-60 " title="Player Avatar if available or Random Sports Image" />
+              <img src={player.picture ? player.picture : "http://lorempixel.com/400/200/people"} className="br-100 w3 h3 dib ba b--black-10 " title="Player Avatar if available or Random Sports Image" />
               <div className="athelas f6 fw3">{`${toUpper(head(player.firstName))+tail(toLower(player.firstName))} ${toUpper(head(player.lastName))}`}</div>
             </div>
           </article>
@@ -42,13 +41,13 @@ const GameCard = function (props) {
 
 
         <div className="flex items-center pt2 pb2 bg-gold bt b--gray ">
-
-         <span className="lh-title ml3">Organizer:  {props.gameCreator}</span>
+         <span className="athelas lh-title ttu tracked fw1 ml3">Organizer:</span>
+         <span className="avenir lh-title tracked fw4 ml3">{props.gameCreator}</span>
         </div>
 
         <div className="flex items-center pt3 pb3 bg-gold b--gray bb ">
-
-          <span className="lh-title ml3 ">Contact:  {props.creatorContact}</span>
+          <span className="athelas lh-title ttu tracked fw1 ml3">Contact:</span>
+          <span className="avenir lh-title fw4 tracked ml3">{props.creatorContact}</span>
         </div>
 
 <div className="avenir ttu tracked">
@@ -79,16 +78,39 @@ const GameCard = function (props) {
 
 
 
-{contains(props._id, pathOr("", ["player", "currentPlayers"], props))
-  ?
-  <div className="mv1 mv0-ns fl w-100 tc">
-    <div className=" pointer dim pt1-ns mt1-ns mr1-ns br2-ns f4 white-90 lh-title bg-black-80">LEAVE GAME</div>
-  </div>
-  :
-  <div className="mv1 mv0-ns fl w-100 tc">
-      <div className=" pointer hover-gold pt1-ns mt1-ns mr1-ns br2-ns f4 white-90 lh-title bg-black-80">JOIN GAME</div>
-  </div>
-}
+  {
+    /*  If the user is already playing in the game show Leave Game instead of Join Game  */
+    filter(player => player === props.player._id)(props.game.currentPlayers) ?
+
+    <div className="mv1 mv0-ns fl w-100 tc">
+      <div className=" pointer dim pt1-ns mt1-ns br2-ns f4 white-90 lh-title bg-black-80">LEAVE GAME</div>
+    </div>
+
+    :
+
+    <div className="mv1 mv0-ns fl w-100 tc">
+        <div className="pointer yellow pt1-ns mt1-ns mr1-ns br2-ns f4 lh-title bg-black-80">JOIN GAME</div>
+    </div>
+  }
+
+
+  {
+
+    props.player._id === props.game.gameCreator._id &&
+
+    <div>
+      <div className="mv1 mv0-ns fl w-100 w-50-ns tc">
+          <div className="pointer hover-dark-red pt1-ns mt1-ns mr1-ns br2-ns f4 white-90 lh-title bg-black-80">DELETE GAME</div>
+      </div>
+
+      <Link to="/edit/game" className="link">
+        <div className="mv1 mv0-ns fl w-100 w-50-ns tc ">
+            <div className="pointer yellow pt1-ns mt1-ns ml1-ns br2-ns f4 lh-title bg-black-80">EDIT GAME</div>
+        </div>
+      </Link>
+    </div>
+
+  }
 
 
 
@@ -108,9 +130,7 @@ const GameCard = function (props) {
 </div>
 
       <header className="avenir fw4 ttu tracked f5 lh-copy measure b">Current Roster:</header>
-          <div>{map(mapFunctionForCurrentPlayers)(pathOr("Awaiting Players...", ["currentPlayers"], props))}</div>
-
-
+          <div>{map(mapFunctionForCurrentPlayers)(props.game.currentPlayers)}</div>
 
       </header>
 

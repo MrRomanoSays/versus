@@ -34,7 +34,7 @@ function getGame(gameId, cb) {
 function addGame(game, cb) {
     game.type = "game"
     game.created = new Date().toISOString()
-    let newId = `game_${game.sport.toLowerCase()}_${game.creator ? game.creator.toLowerCase() : 'admin'}_${game.created}`
+    let newId = `game_${game.sport.toLowerCase()}_${game.gameCreator ? game.gameCreator.toLowerCase() : 'unknown_creator'}_${game.created}`
     game._id = prepID(newId)
 
     db.put(game, function(err, res) {

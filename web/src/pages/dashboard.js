@@ -4,6 +4,7 @@ import { BrowserRouter, Link } from 'react-router-dom'
 import fetch from 'isomorphic-fetch'
 
 import moment from 'moment'
+import { head } from 'ramda'
 
 import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
 import Header from '../components/header'
@@ -15,6 +16,7 @@ import LocationList from '../components/location-list'
 
 class Dashboard extends React.Component {
   componentDidMount () {
+    console.log("Dashboard loaded and fetched data")
     fetch(`http://localhost:8080/players/player_${this.props.user.user_id}`, {
      headers: {
        "Content-Type": "application/json",
@@ -48,7 +50,11 @@ class Dashboard extends React.Component {
             userId={this.props.player._id}
             player={this.props.player}
             playerAvatar={this.props.user.picture}
-
+            loadCreatorDetails={ (player) => (e) => {
+              this.props.dispatch({ type: "SET_GAME_CREATOR", payload: player })
+              this.props.dispatch({ type: "SET_PREFERRED_CONTACT", payload: player.phone })
+              this.props.dispatch({ type: "SET_CURRENT_PLAYER", payload: player })
+            }}
           />
 
         {!this.props.player._id ?

@@ -14,7 +14,7 @@ const NavBarLogin = function (props) {
             <div className="tc">
               <img src={props.playerAvatar ? `${props.playerAvatar}` : 'http://lorempixel.com/125/125/sports/'} className='ba br-100 fl w2 h2 mr2 mt1'/>
 
-              <Link to="/" className="fl mt1 mb2 link dim white-90 pa1 f6 f5-l mr2"
+              <Link to="/" className="fl mt1 mb2 link hover-dark-red white-90 pa1 f6 f5-l mr2"
                 onClick={e => {
                   props.dispatch({type: 'CLEAR_AUTH'})
                   props.dispatch({type: 'CLEAR_USER'})

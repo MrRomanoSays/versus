@@ -42,7 +42,7 @@ const GameList = function (props) {
                 <div className="fl w-34-ns w-100 tc pv1 bg-black-80 white-90 ba b--black-05">
                   <div className="pv2">
                     <div className="f6 fw4">Current</div>
-                    <div className="f4-l f5-m f6-s fw6">{game.currentPlayers < game.minPlayers ? `Need ${game.minPlayers-game.currentPlayers}` : game.currentPlayers >= game.minPlayers && game.currentPlayers <= game.maxPlayers ? `${game.maxPlayers-game.currentPlayers} spots left` : game.currentPlayers === game.maxPlayers ? `Full` : null }</div>
+                    <div className="f4-l f5-m f6-s fw6">{game.currentPlayers.length < game.minPlayers ? `Need ${game.minPlayers-game.currentPlayers.length}` : game.currentPlayers.length >= game.minPlayers && game.currentPlayers.length <= game.maxPlayers ? `${game.maxPlayers-game.currentPlayers.length} spots left` : game.currentPlayers.length === game.maxPlayers ? `Full` : null }</div>
                   </div>
                 </div>
 
@@ -73,7 +73,7 @@ const GameList = function (props) {
               <Link to="/about/game" className="fl w-100 w-10-ns f4 mv0 avenir ttu tracked link"
                 onClick={props.loadGameToState(game)}
               >
-                <div className="br2 mt1 mb1 tc pv1 bg-black-20 black bl b--black-05 hover-yellow hover-bg-black-80">
+                <div className="br2 mt1 mb1 tc pv1 gold bl b--black-05 hover-yellow hover-gold bg-black-80">
                   <div className="pv2">
                     <div className="f6 fw4">MORE</div>
                     <div className="f4 fw6">></div>

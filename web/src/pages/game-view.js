@@ -5,6 +5,7 @@ import fetch from 'isomorphic-fetch'
 
 import moment from 'moment'
 
+import { head } from 'ramda'
 
 import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
 import Header from '../components/header'
@@ -39,12 +40,20 @@ class GameView extends React.Component {
             userId={this.props.player._id}
             player={this.props.player}
             playerAvatar={this.props.user.picture}
-
+            loadCreatorDetails={ (player) => (e) => {
+              this.props.dispatch({ type: "SET_GAME_CREATOR", payload: player })
+              this.props.dispatch({ type: "SET_PREFERRED_CONTACT", payload: player.phone })
+              this.props.dispatch({ type: "SET_CURRENT_PLAYER", payload: player })
+            }}
           />
 
+
         {this.props.game.currentPlayers.length < this.props.game.maxPlayers ?
+
             <GameCard
               game={this.props.game}
+
+              player={this.props.player}
 
               gameDate={this.props.game.dateOfGame}
               time={moment(`${this.props.game.startTime}`, `HH:mm`).format(`h:mm a`)}
@@ -53,16 +62,16 @@ class GameView extends React.Component {
               city={this.props.game.gameLocation.city}
               state={this.props.game.gameLocation.state}
               zipcode={this.props.game.gameLocation.zipcode}
-              gameCreator={this.props.game.gameCreator}
+              gameCreator={this.props.game.gameCreator.firstName + " " + head(`${this.props.game.gameCreator.lastName}.`)}
               creatorContact={this.props.game.preferredContact}
               minPlayers={this.props.game.minPlayers}
               maxPlayers={this.props.game.maxPlayers}
-              currentPlayers={this.props.game.currentPlayers}
+              currentPlayers={this.props.game.currentPlayers.length}
               preferredSkillLevel={this.props.game.preferredSkillLevels}
               locationDescription={this.props.game.gameLocation.description}
               equipmentInfo={this.props.game.equipmentInfo}
               moreInfo={this.props.game.moreInfo}
-
+              sport={this.props.game.sport}
             />
           :
           <div>
