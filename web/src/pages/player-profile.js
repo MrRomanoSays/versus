@@ -8,27 +8,37 @@ import ButtonForward from '../components/button-forward'
 import Button from '../components/button'
 
 
+import LoggedOutQue from '../components/logged-out-que'
+
 import backgroundPhoto from '../images/hockey-kid.jpg'
 
 import View from '../components/view'
 import SectionHeader from '../components/section-header'
 
 import ContactInfo from '../components/contact-info'
-
 import LocationPreferences from '../components/location-preferences'
-
 import BasicDemographics from '../components/basic-demographics'
-
 import PlayerBio from '../components/player-bio'
 
 
-const postPlayer = (player, idToken) => {
-   return fetch(`http://localhost:8080/players`, {
+const addPlayer = (player, idToken) => {
+   return fetch(`http://localhost:8080/players/${player._id}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: 'Bearer ' + idToken
     },
     method: "POST",
+    body: JSON.stringify(player)
+  })
+}
+
+const updatePlayer = (player, idToken) => {
+   return fetch(`http://localhost:8080/players/${player._id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + idToken
+    },
+    method: "PUT",
     body: JSON.stringify(player)
   })
 }
@@ -40,205 +50,212 @@ class PlayerProfile extends React.Component {
   render () {
     return (
 
+        !this.props.auth ?
 
-  <div>
-    <div className="cf" style={{background: `url(${backgroundPhoto}) no-repeat center fixed`, backgroundSize: 'cover'}}>
-      <div className="fr pa3 mr5-ns mt5-ns mt0-s mb7-ns  bg-white black-70 measure-wide times">
+          <LoggedOutQue
+            auth={(e) => {this.props.lock.show()}}
+          />
+
+          :
+
+        <div>
+          <div className="cf" style={{background: `url(${backgroundPhoto}) no-repeat center fixed`, backgroundSize: 'cover'}}>
+            <div className="fr pa3 mr5-ns mt5-ns mt0-s mb7-ns  bg-white black-70 measure-wide times">
 
 
-        <div className="fl w-100">
+              <div className="fl w-100">
 
-        {equals(this.props.view, 'step1') && (
-          <View
-            headline=""
-
-            body=
-
-              {<ContactInfo
-                sectionHeader={<SectionHeader
+              {equals(this.props.view, 'step1') && (
+                <View
                   headline=""
-                  subHeadline=""
-                  sectionTitle="Contact Information"
+
+                  body=
+
+                    {<ContactInfo
+                      sectionHeader={<SectionHeader
+                        headline=""
+                        subHeadline=""
+                        sectionTitle="Contact Information"
+                      />}
+
+                    firstName={this.props.player.firstName}
+                    firstNameHandleChange={this.props.setPlayerFirstName}
+
+                    lastName={this.props.player.lastName}
+                    lastNameHandleChange={this.props.setPlayerLastName}
+
+                    email={this.props.player.email}
+                    emailHandleChange={this.props.setPlayerEmail}
+
+                    phone={this.props.player.phone}
+                    phoneHandleChange={this.props.setPlayerPhone}
+                    />}
+
+                buttonCenter={<Button
+                  buttonText="Cancel"
+                  onClick= {e => {
+                    this.props.reset()
+                    this.props.history.push('/dashboard')
+                  }}
+                  />}
+
+                buttonRight={<ButtonForward
+                  onClick={e => this.props.next('step2')}
+                  />}
+                >
+
+              </View>
+            )}
+
+
+            {equals(this.props.view, 'step2') && (
+            <View
+              headline=""
+
+              body=
+
+                {<LocationPreferences
+                  sectionHeader={<SectionHeader
+                    headline=""
+                    subHeadline=""
+                    sectionTitle="Location Preferences"
+                  />}
+
+                streetAddress={this.props.player.streetAddress}
+                streetAddressHandleChange={this.props.setPlayerStreetAddress}
+
+                city={this.props.player.city}
+                cityHandleChange={this.props.setPlayerCity}
+
+                state={this.props.player.state}
+                stateHandleChange={this.props.setPlayerState}
+
+                zipcode={this.props.player.zipcode}
+                zipcodeHandleChange={this.props.setPlayerZipcode}
                 />}
 
-              firstName={this.props.player.firstName}
-              firstNameHandleChange={this.props.setPlayerFirstName}
-
-              lastName={this.props.player.lastName}
-              lastNameHandleChange={this.props.setPlayerLastName}
-
-              email={this.props.player.email}
-              emailHandleChange={this.props.setPlayerEmail}
-
-              phone={this.props.player.phone}
-              phoneHandleChange={this.props.setPlayerPhone}
+            buttonLeft={<ButtonBack
+              onClick={e => this.props.next('step1')}
               />}
 
-          buttonCenter={<Button
-            buttonText="Cancel"
-            onClick= {e => {
-              this.props.reset()
-              this.props.resetPlayer()
-              this.props.history.push('/dashboard')
-            }}
-            />}
+            buttonCenter={<Button
+              buttonText="Cancel"
+              onClick= {e => {
+                this.props.reset()
+                this.props.history.push('/dashboard')
+              }}
+              />}
 
-          buttonRight={<ButtonForward
-            onClick={e => this.props.next('step2')}
-            />}
-          >
+            buttonRight={<ButtonForward
+              onClick={e => this.props.next('step3')}
+              />}
+            >
 
-        </View>
-      )}
+            </View>
+            )}
 
 
-      {equals(this.props.view, 'step2') && (
-      <View
-        headline=""
-
-        body=
-
-          {<LocationPreferences
-            sectionHeader={<SectionHeader
+            {equals(this.props.view, 'step3') && (
+            <View
               headline=""
-              subHeadline=""
-              sectionTitle="Location Preferences"
-            />}
 
-          streetAddress={this.props.player.streetAddress}
-          streetAddressHandleChange={this.props.setPlayerStreetAddress}
+              body=
 
-          city={this.props.player.city}
-          cityHandleChange={this.props.setPlayerCity}
+                {<BasicDemographics
+                  sectionHeader={<SectionHeader
+                    headline=""
+                    subHeadline=""
+                    sectionTitle="Basic Demographics"
+                  />}
 
-          state={this.props.player.state}
-          stateHandleChange={this.props.setPlayerState}
+                gender={this.props.player.gender}
+                genderHandleChange={this.props.setPlayerGender}
 
-          zipcode={this.props.player.zipcode}
-          zipcodeHandleChange={this.props.setPlayerZipcode}
-          />}
+                age={this.props.player.age}
+                handleAgeChange={this.props.setPlayerAge}
+                />}
 
-      buttonLeft={<ButtonBack
-        onClick={e => this.props.next('step1')}
-        />}
+            buttonLeft={<ButtonBack
+              onClick={e => this.props.next('step2')}
+              />}
 
-      buttonCenter={<Button
-        buttonText="Cancel"
-        onClick= {e => {
-          this.props.reset()
-          this.props.resetPlayer()
-          this.props.history.push('/dashboard')
-        }}
-        />}
+            buttonCenter={<Button
+              buttonText="Cancel"
+              onClick= {e => {
+                this.props.reset()
+                this.props.history.push('/dashboard')
+              }}
+              />}
 
-      buttonRight={<ButtonForward
-        onClick={e => this.props.next('step3')}
-        />}
-      >
+            buttonRight={<ButtonForward
+              onClick={e => this.props.next('stepFinal')}
+              />}
+            >
 
-      </View>
-      )}
+            </View>
+            )}
 
 
-      {equals(this.props.view, 'step3') && (
-      <View
-        headline=""
-
-        body=
-
-          {<BasicDemographics
-            sectionHeader={<SectionHeader
+            {equals(this.props.view, 'stepFinal') && (
+            <View
               headline=""
-              subHeadline=""
-              sectionTitle="Basic Demographics"
-            />}
 
-          gender={this.props.player.gender}
-          genderHandleChange={this.props.setPlayerGender}
+              body=
 
-          age={this.props.player.age}
-          handleAgeChange={this.props.setPlayerAge}
-          />}
+                {<PlayerBio
+                  sectionHeader={<SectionHeader
+                    headline=""
+                    subHeadline=""
+                    sectionTitle="Additional Info"
+                  />}
 
-      buttonLeft={<ButtonBack
-        onClick={e => this.props.next('step2')}
-        />}
+                bio={this.props.player.bio}
+                bioHandleChange={this.props.setPlayerBio}
 
-      buttonCenter={<Button
-        buttonText="Cancel"
-        onClick= {e => {
-          this.props.reset()
-          this.props.resetPlayer()
-          this.props.history.push('/dashboard')
-        }}
-        />}
+                />}
 
-      buttonRight={<ButtonForward
-        onClick={e => this.props.next('stepFinal')}
-        />}
-      >
+            buttonLeft={<ButtonBack
+              onClick={e => this.props.next('step3')}
+              />}
 
-      </View>
-      )}
-
-
-      {equals(this.props.view, 'stepFinal') && (
-      <View
-        headline=""
-
-        body=
-
-          {<PlayerBio
-            sectionHeader={<SectionHeader
-              headline=""
-              subHeadline=""
-              sectionTitle="Additional Info"
-            />}
-
-          bio={this.props.player.bio}
-          bioHandleChange={this.props.setPlayerBio}
-
-          />}
-
-      buttonLeft={<ButtonBack
-        onClick={e => this.props.next('step3')}
-        />}
-
-      buttonCenter={<Button
-        buttonText="Cancel"
-        onClick= {e => {
-          this.props.reset()
-          this.props.resetPlayer()
-          this.props.history.push('/dashboard')
-        }}
-        />}
-
-        buttonRight={<ButtonForward
-          buttonText="Save Profile"
-          onClick= {
-            this.props.addPlayer(this.props.history, this.props.player, this.props.auth.idToken)}
-        />}
-      >
-
-      </View>
-      )}
+            buttonCenter={<Button
+              buttonText="Cancel"
+              onClick= {e => {
+                this.props.reset()
+                this.props.history.push('/dashboard')
+              }}
+              />}
 
 
 
+              buttonRight={<ButtonForward
+                buttonText={
+                  !this.props.player._id
+                    ?   "Save Profile"
+                    :   "Update Profile"
+                }
+                onClick= {
+                  !this.props.player._id
+                    ?   this.props.createPlayer(this.props.history, this.props.player, this.props.auth.idToken)
+                    :   this.props.editPlayer(this.props.history, this.props.player, this.props.auth.idToken)
+                  }
+              />}
+            >
+
+            </View>
+            )}
 
 
-
-
+                </div>
+              </div>
+            </div>
 
           </div>
-        </div>
-      </div>
-    </div>
+
+
+
+
   )
-
-
-
-
 
   }
 }
@@ -253,22 +270,34 @@ const MapActionsToProps = function (dispatch) {
   return {
     reset: () => {
       dispatch({ type: "RESET" })
-      dispatch({ type: "RESET_PLAYER" })
     },
     resetPlayer: () => { dispatch({ type: "RESET_PLAYER" })},
     previous: (view) => dispatch({ type: "PREVIOUS", payload: view }),
     next: (view) => dispatch({ type: "NEXT", payload: view }),
 
-    addPlayer: (history, player, idToken) => (e) => {
-      postPlayer(player, idToken)
+    createPlayer: (history, player, idToken) => (e) => {
+      addPlayer(player, idToken)
         .then(res => res.json())
         .then(res => {
           if (res.id) {
             dispatch({ type: "RESET" })
-            dispatch({ type: "RESET_PLAYER" })
             history.push('/dashboard')
           } else {
-            alert('Error saving to the database.')
+            alert('Error creating your profile in the database.')
+          }
+        })
+        .catch(err => console.log(err.message))
+    },
+
+    editPlayer: (history, player, idToken) => (e) => {
+      updatePlayer(player, idToken)
+        .then(res => res.json())
+        .then(res => {
+          if (res.id) {
+            dispatch({ type: "RESET" })
+            history.push('/dashboard')
+          } else {
+            alert('Error updating your profile in the database.')
           }
         })
         .catch(err => console.log(err.message))

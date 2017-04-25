@@ -1,18 +1,38 @@
 import React from 'react'
 
-import ButtonLinkBack from '../components/button-link-back'
+import NavBarLogin from '../components/navigation-bar-loggedIn'
+
+import BackgroundImageWithBanner from '../components/background-image-with-banner'
+import backgroundImage from '../images/tall-building-with-hoop.jpg'
+
+import { connect } from 'react-redux'
+
 
 const HowItWorks = function (props) {
   return (
     <div>
-      <h1>How it Works Page goes here</h1>
-      <ButtonLinkBack
-        buttonText=""
-        linkUrl="/"
+
+      <NavBarLogin
+        auth={props.auth}
+        playerAvatar={props.user.picture}
+
       />
+
+      <BackgroundImageWithBanner
+        backgroundImage={backgroundImage}
+        bannerText="If you add it, they will come."
+        subText=""
+      />
+
+      <p>...</p>
+
+
+
 
     </div>
   )
 }
 
-export default HowItWorks
+const connector = connect(state=>state)
+
+export default connector(HowItWorks)

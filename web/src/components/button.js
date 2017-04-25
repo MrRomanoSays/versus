@@ -12,3 +12,13 @@ const Button = function (props) {
 }
 
 export default Button
+
+
+
+
+// import Button from ''
+//
+// <Button
+//   onClick=
+//   buttonText=
+// />

@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { equals } from 'ramda'
+import { equals, set, lensProp, append, head, omit  } from 'ramda'
 
 
 import TextField from '../components/form-text-field'
@@ -35,6 +35,7 @@ import LocationList from '../components/location-list'
 import PlayersAndSkill from '../components/players-and-skill'
 
 import AdditionalInfo from '../components/additional-info'
+import LoggedOutQue from '../components/logged-out-que'
 
 
 const postGame = (game, idToken) => {
@@ -48,6 +49,28 @@ const postGame = (game, idToken) => {
   })
 }
 
+const updatePlayer = (player, idToken) => {
+   return fetch(`http://localhost:8080/players/${player._id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + idToken
+    },
+    method: "PUT",
+    body: JSON.stringify(player)
+  })
+}
+
+const getUpdatedPlayer = (player, idToken) => {
+   return fetch(`http://localhost:8080/players/${player._id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + idToken
+    },
+    method: "GET"
+
+  })
+}
+
 
 
 class CreateGame extends React.Component {
@@ -58,9 +81,19 @@ class CreateGame extends React.Component {
     this.props.setPreferredContact(this.props.player.phone)
     this.props.setCurrentPlayer(this.props.player)
 
+    this.props.setGameCreated(new Date().toISOString())
+
   }
   render () {
     return (
+
+      !this.props.auth ?
+
+        <LoggedOutQue
+          auth={(e) => {this.props.lock.show()}}
+        />
+
+        :
 
 
       <div>
@@ -241,7 +274,10 @@ class CreateGame extends React.Component {
               }}
               />}
             buttonRight={<ButtonForward
-              onClick={e => this.props.next('step5')}
+              onClick={e => {
+                this.props.next('step5')
+                !this.props.game._rev ? this.props.setGameId(`game_${this.props.game.sport.toLowerCase()}_${this.props.game.gameCreator._id}_${this.props.game.created}`) : null
+              }}
               />}
           >
           </View>
@@ -275,10 +311,9 @@ class CreateGame extends React.Component {
               buttonRight={<ButtonForward
                 buttonText="Create Game"
                 onClick= {
-                  this.props.addGame(this.props.history, this.props.game, this.props.auth.idToken)}
+                  this.props.addGame(this.props.history, this.props.game, this.props.auth.idToken, this.props.player)
+                }
               />}
-
-
           >
 
           </View>
@@ -287,37 +322,9 @@ class CreateGame extends React.Component {
 
 
 
-        {equals(this.props.view, 'stepFinal') && (
-          <View title="Final Step"
-            headline="Final Step"
-            buttonLeft={<ButtonBack
-              onClick= {e => this.props.previous('stepLast')}
-            />}
-            buttonCenter={<Button
-              buttonText="Cancel"
-              onClick= {e => {
-                this.props.reset()
-                this.props.resetGame()
-                this.props.history.push('/dashboard')
-              }}
-            />}
-            buttonRight={<ButtonForward
-              buttonText="Create Game"
-              onClick= {e => {
-                this.props.add(this.props.game)
-                this.props.reset()
-                this.props.history.push('/dashboard')
-              }}
-            />}
-          >
-            {/*
-            <ViewPickSport
-              ...with attributes...
-            />
-            */}
-          </View>
-        )}
+
       </div>
+
 
 
 
@@ -342,27 +349,48 @@ const MapActionsToProps = function (dispatch) {
     },
     resetGame: () => { dispatch({ type: "RESET_GAME" }) },
 
-    setGameCreator: (player) => dispatch({ type: "SET_GAME_CREATOR", payload: player }),
+    setGameCreator: (player) => dispatch({ type: "SET_GAME_CREATOR", payload: omit(['_rev', 'gamesCreated', 'myGames', 'streetAddress', 'type'], player) }),
     setPreferredContact: (playerPhoneNumber) => dispatch({ type: "SET_PREFERRED_CONTACT", payload: playerPhoneNumber }),
-    setCurrentPlayer: (player) => dispatch({ type: "SET_CURRENT_PLAYER", payload: player }),
-
-
+    setCurrentPlayer: (player) => {
+      const basicPlayerInfo = {
+        _id: player._id,
+        picture: player.picture,
+        shortName: `${player.firstName} ${head(player.lastName)}`,
+        firstName: player.firstName,
+        lastName: player.lastName
+      }
+      dispatch({ type: "SET_BASIC_PLAYER_INFO", payload: basicPlayerInfo })
+    },
+    setGameCreated: (time) => dispatch({ type: "SET_GAME_CREATED", payload: time }),
+    setGameId: (gameId) => dispatch({ type: "SET_GAME_ID", payload: gameId }),
 
     previous: (view) => dispatch({ type: "PREVIOUS", payload: view }),
     next: (view) => dispatch({ type: "NEXT", payload: view }),
-    addGame: (history, game, idToken) => (e) => {
+    addGame: (history, game, idToken, player) => (e) => {
       postGame(game, idToken)
         .then(res => res.json())
         .then(res => {
           if (res.id) {
+
+
+            const myGamesLens = lensProp('myGames')
+            const playerGames = append(game._id, player.myGames)
+            const playerWithUpdatedGame = set(myGamesLens, playerGames, player)
+            updatePlayer(playerWithUpdatedGame, idToken)
+
+            getUpdatedPlayer(player, idToken)
+
             dispatch({ type: "RESET" })
             dispatch({ type: "RESET_GAME" })
             history.push('/dashboard')
+
           } else {
-            alert('Error saving to the database.')
+            alert('Error saving game to the database.')
           }
         })
-        .catch(err => console.log(err.message))
+
+
+
     },
 
     setSport: (sportName) => dispatch({ type: "SET_GAME_SPORT", payload: sportName }),

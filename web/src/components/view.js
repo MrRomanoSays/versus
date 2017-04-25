@@ -24,9 +24,9 @@ const View = function (props) {
           </div>
         </navigation>
 
-          <header className="black-70 bt b--black-10">
+          <header className="bt b--black-10">
             <div className="cf">
-              <h1 className="fl w-100 pv0 f6 fw6 ttu tracked mb3 ">{props.headline}</h1>
+              <h1 className="avenir tc pl3-l fl w-100 pv1 f2-l pa4-s fw4 ttu tracked mb3 bg-black-70 gold ">{props.headline}</h1>
             </div>
           </header>
 

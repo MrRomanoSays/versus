@@ -12,7 +12,7 @@ import ButtonList from './button-list'
 const GameList = function (props) {
   const gameToListView = function (game) {
     return (
-      <li className="tc tl-ns pr2 pb4 avenir" key={game.gameCreator+game.sport+game.startTime}>
+      <li className="tc tl-ns pr2 pb4 avenir" key={`${game.gameCreator._id}_${game.sport}_${game.startTime}`}>
 
         <div className="cf">
               <div className="shadow-5 fl w-60-ns w-100 f4 bg-yellow mv0 ph3 ba b--gold">
@@ -44,13 +44,11 @@ const GameList = function (props) {
                     <div className="f6 fw4">Current</div>
                     <div className="f4-l f5-m f6-s fw6">{game.currentPlayers.length < game.minPlayers ? `Need ${game.minPlayers-game.currentPlayers.length}` : game.currentPlayers.length >= game.minPlayers && game.currentPlayers.length <= game.maxPlayers ? `${game.maxPlayers-game.currentPlayers.length} spots left` : game.currentPlayers.length === game.maxPlayers ? `Full` : null }</div>
                   </div>
-                </div>
-
-
-
-
               </div>
+            </div>
       </div>
+
+
       <div className="cf bb b--black-10 bw1">
               <div className="fl w-100 w-30-m w-40-l  f4 mv0 ph3 bl b--black-05">
                 <div className="pv1">
@@ -70,7 +68,7 @@ const GameList = function (props) {
                 </div>
               </div>
 
-              <Link to="/about/game" className="fl w-100 w-10-ns f4 mv0 avenir ttu tracked link"
+              <Link to={`/about/game/${game._id}`} className="fl w-100 w-10-ns f4 mv0 avenir ttu tracked link"
                 onClick={props.loadGameToState(game)}
               >
                 <div className="br2 mt1 mb1 tc pv1 gold bl b--black-05 hover-yellow hover-gold bg-black-80">
@@ -103,5 +101,7 @@ const GameList = function (props) {
 }
 
 const connector = connect(state => state)
+
+
 
 export default connector(GameList)

@@ -8,15 +8,16 @@ import moment from 'moment'
 import { head } from 'ramda'
 
 import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
-import Header from '../components/header'
+import LoggedOutQue from '../components/logged-out-que'
 
+import Header from '../components/header'
 import GameCard from '../components/card-game'
 
 
 class GameView extends React.Component {
   componentDidMount () {
 
-    fetch(`http://localhost:8080/games/${this.props.game._id}`, {
+    fetch(`http://localhost:8080/games/${this.props.match.params.id}`, {
      headers: {
        "Content-Type": "application/json",
        Authorization: 'Bearer ' + this.props.auth.idToken
@@ -34,6 +35,8 @@ class GameView extends React.Component {
   render () {
     return (
 
+
+
         <div>
           <NavBarLoggedIn
             auth={this.props.auth}
@@ -47,31 +50,21 @@ class GameView extends React.Component {
             }}
           />
 
+        {!this.props.auth ?
 
-        {this.props.game.currentPlayers.length < this.props.game.maxPlayers ?
+          <LoggedOutQue
+            auth={(e) => {this.props.lock.show()}}
+          />
+
+          :
+
+
+        this.props.game.currentPlayers.length < this.props.game.maxPlayers ?
 
             <GameCard
               game={this.props.game}
-
               player={this.props.player}
-
-              gameDate={this.props.game.dateOfGame}
-              time={moment(`${this.props.game.startTime}`, `HH:mm`).format(`h:mm a`)}
-              locationName={this.props.game.gameLocation.name}
-              streetAddress={this.props.game.gameLocation.streetAddress}
-              city={this.props.game.gameLocation.city}
-              state={this.props.game.gameLocation.state}
-              zipcode={this.props.game.gameLocation.zipcode}
-              gameCreator={this.props.game.gameCreator.firstName + " " + head(`${this.props.game.gameCreator.lastName}.`)}
-              creatorContact={this.props.game.preferredContact}
-              minPlayers={this.props.game.minPlayers}
-              maxPlayers={this.props.game.maxPlayers}
-              currentPlayers={this.props.game.currentPlayers.length}
-              preferredSkillLevel={this.props.game.preferredSkillLevels}
-              locationDescription={this.props.game.gameLocation.description}
-              equipmentInfo={this.props.game.equipmentInfo}
-              moreInfo={this.props.game.moreInfo}
-              sport={this.props.game.sport}
+              
             />
           :
           <div>
@@ -80,13 +73,14 @@ class GameView extends React.Component {
             <GameCard />
 
           </div>
+
+
         }
 
+      </div>
 
-        </div>
-
-    )
-  }
+      )
+    }
 }
 
 

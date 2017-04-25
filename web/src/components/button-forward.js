@@ -15,3 +15,11 @@ const ButtonForward = function (props) {
 }
 
 export default ButtonForward
+
+
+// import ButtonForward from ''
+// 
+// <ButtonForward
+//   onClick=
+//   buttonText=
+// />

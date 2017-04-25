@@ -20,6 +20,7 @@ import rugby from '../images/icons/rugby.png'
 import tennis from '../images/icons/tennis.png'
 import volleyball from '../images/icons/volleyball.png'
 
+import LoggedOutQue from '../components/logged-out-que'
 import PickDay from '../components/grid5-2'
 import DatePicker from '../components/date-picker'
 import ShowDate from '../components/show-date'
@@ -37,21 +38,24 @@ import PlayersAndSkill from '../components/players-and-skill'
 import AdditionalInfo from '../components/additional-info'
 
 
-const postGame = (game, idToken) => {
-   return fetch(`http://localhost:8080/games`, {
+
+const updateGame = (game, idToken) => {
+   return fetch(`http://localhost:8080/games/${game._id}`, {
     headers: {
       "Content-Type": "application/json",
       Authorization: 'Bearer ' + idToken
     },
-    method: "POST",
+    method: "PUT",
     body: JSON.stringify(game)
   })
 }
 
 
+
 const EditGame = function (props) {
 
   return (
+
     <div>
       {equals(props.view, 'step1') && (
         <View title="Pick Sport"
@@ -263,9 +267,9 @@ const EditGame = function (props) {
             }}
             />}
             buttonRight={<ButtonForward
-              buttonText="Create Game"
+              buttonText="Update Game"
               onClick= {
-                props.addGame(props.history, props.game, props.auth.idToken)}
+                props.editGame(props.history, props.game, props.auth.idToken)}
             />}
 
 
@@ -276,6 +280,7 @@ const EditGame = function (props) {
 
 
     </div>
+
   )
 }
 
@@ -293,16 +298,18 @@ const MapActionsToProps = function (dispatch) {
     resetGame: () => { dispatch({ type: "RESET_GAME" }) },
     previous: (view) => dispatch({ type: "PREVIOUS", payload: view }),
     next: (view) => dispatch({ type: "NEXT", payload: view }),
-    addGame: (history, game, idToken) => (e) => {
-      postGame(game, idToken)
+
+    editGame: (history, game, idToken) => (e) => {
+      updateGame(game, idToken)
         .then(res => res.json())
         .then(res => {
           if (res.id) {
+
             dispatch({ type: "RESET" })
             dispatch({ type: "RESET_GAME" })
             history.push('/dashboard')
           } else {
-            alert('Error saving to the database.')
+            alert('Error saving your updated game to the database.')
           }
         })
         .catch(err => console.log(err.message))
