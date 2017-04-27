@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { append, merge, set, lensProp } from 'ramda'
+import { append, contains, merge, set, lensProp } from 'ramda'
 import { authReducer, lockReducer, authListener } from './auth'
 
 const PREVIOUS = "PREVIOUS"
@@ -17,17 +17,19 @@ const SET_PLAYER_FROM_DATABASE="SET_PLAYER_FROM_DATABASE"
 
 
 const SET_GAME_CREATOR="SET_GAME_CREATOR"
+const SET_BASIC_PLAYER_INFO="SET_BASIC_PLAYER_INFO"
 const SET_PREFERRED_CONTACT="SET_PREFERRED_CONTACT"
 const SET_CURRENT_PLAYER="SET_CURRENT_PLAYER"
-const SET_BASIC_PLAYER_INFO="SET_BASIC_PLAYER_INFO"
+const SET_NEW_PLAYER="SET_NEW_PLAYER"
 const SET_GAME_CREATED="SET_GAME_CREATED"
 const SET_GAME_ID="SET_GAME_ID"
 
 const SET_GAME_FROM_DATABASE="SET_GAME_FROM_DATABASE"
 
 const SET_GAME_TO_MY_GAMES="SET_GAME_TO_MY_GAMES"
+const SET_REV_OF_UPDATED_GAME="SET_REV_OF_UPDATED_GAME"
+const SET_REV_OF_UPDATED_PLAYER="SET_REV_OF_UPDATED_PLAYER"
 
-// The following tags are used to explicitly set state from the create/edit game inputs
 const SET_GAME_SPORT="SET_GAME_SPORT"
 const SET_GAME_LOCATION="SET_GAME_LOCATION"
 const SET_GAME_MIN_PLAYERS="SET_GAME_MIN_PLAYERS"
@@ -314,11 +316,23 @@ const game = (
       return merge(state, {gameCreator: action.payload })
     case SET_PREFERRED_CONTACT:
       return merge(state, {preferredContact: action.payload })
+
     //Previously used to add entire player object to currentPlayer property.
     case SET_CURRENT_PLAYER:
       return merge(state, {currentPlayers: append(action.payload, state.currentPlayers)})
+
+    //Occurs on Create Game (Component Did Mount) to set creator as current player
     case SET_BASIC_PLAYER_INFO:
+      return (merge(state, {currentPlayers: [action.payload]}))
+
+    case SET_NEW_PLAYER:
       return merge(state, {currentPlayers: append(action.payload, state.currentPlayers)})
+
+    case SET_REV_OF_UPDATED_GAME:
+      return merge(state, {_rev: action.payload })
+
+
+
     case SET_GAME_ID:
       return merge(state, {_id: action.payload })
 
@@ -440,10 +454,15 @@ const player = (
       return merge(state, {bio: action.payload })
 
 
+    //Occurs on Player Join
+    case SET_GAME_TO_MY_GAMES:
+      return merge(state, {myGames: append(action.payload, state.myGames)})
+
+    case SET_REV_OF_UPDATED_PLAYER:
+      return merge(state, {_rev: action.payload })
 
 
 
-      return merge(state, action.payload)
     case LOAD_PLAYER:
       return action.payload
     default:

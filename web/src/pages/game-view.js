@@ -64,7 +64,9 @@ class GameView extends React.Component {
             <GameCard
               game={this.props.game}
               player={this.props.player}
-              
+              auth={this.props.auth}
+              history={this.props.history}
+
             />
           :
           <div>

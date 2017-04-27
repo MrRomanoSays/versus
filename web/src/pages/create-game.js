@@ -388,9 +388,6 @@ const MapActionsToProps = function (dispatch) {
             alert('Error saving game to the database.')
           }
         })
-
-
-
     },
 
     setSport: (sportName) => dispatch({ type: "SET_GAME_SPORT", payload: sportName }),
