@@ -1,7 +1,8 @@
 import moment from 'moment'
 
-import { createStore, combineReducers } from 'redux'
-import { append, merge } from 'ramda'
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { append, contains, merge, set, lensProp } from 'ramda'
+import { authReducer, lockReducer, authListener } from './auth'
 
 const PREVIOUS = "PREVIOUS"
 const NEXT = "NEXT"
@@ -11,6 +12,23 @@ const RESET = "RESET"
 
 const LOAD_GAMES="LOAD_GAMES"
 const LOAD_PLAYERS="LOAD_PLAYERS"
+const LOAD_PLAYER="LOAD_PLAYER"
+const SET_PLAYER_FROM_DATABASE="SET_PLAYER_FROM_DATABASE"
+
+
+const SET_GAME_CREATOR="SET_GAME_CREATOR"
+const SET_BASIC_PLAYER_INFO="SET_BASIC_PLAYER_INFO"
+const SET_PREFERRED_CONTACT="SET_PREFERRED_CONTACT"
+const SET_CURRENT_PLAYER="SET_CURRENT_PLAYER"
+const SET_NEW_PLAYER="SET_NEW_PLAYER"
+const SET_GAME_CREATED="SET_GAME_CREATED"
+const SET_GAME_ID="SET_GAME_ID"
+
+const SET_GAME_FROM_DATABASE="SET_GAME_FROM_DATABASE"
+
+const SET_GAME_TO_MY_GAMES="SET_GAME_TO_MY_GAMES"
+const SET_REV_OF_UPDATED_GAME="SET_REV_OF_UPDATED_GAME"
+const SET_REV_OF_UPDATED_PLAYER="SET_REV_OF_UPDATED_PLAYER"
 
 const SET_GAME_SPORT="SET_GAME_SPORT"
 const SET_GAME_LOCATION="SET_GAME_LOCATION"
@@ -27,7 +45,11 @@ const SET_GAME_DATE="SET_GAME_DATE"
 const SET_GAME_TIME="SET_GAME_TIME"
 const SET_GAME_CANCELLATION_DEADLINE="SET_GAME_CANCELLATION_DEADLINE"
 
+const SET_GAME_ID_TO_STATE="SET_GAME_ID_TO_STATE"
 
+const RESET_PLAYER="RESET_PLAYER"
+const SET_PLAYER_USER_ID="SET_PLAYER_USER_ID"
+const SET_PLAYER_USER_PICTURE="SET_PLAYER_USER_PICTURE"
 const SET_PLAYER_FIRST_NAME="SET_PLAYER_FIRST_NAME"
 const SET_PLAYER_LAST_NAME="SET_PLAYER_LAST_NAME"
 const SET_PLAYER_EMAIL="SET_PLAYER_EMAIL"
@@ -241,8 +263,30 @@ const locations = (state=locationDocuments, action) => {
   }
 }
 
+
+const gameInitialState = {
+    _id: "",
+    sport: "",
+    gameCreator: "",
+    preferredContact: "",
+    gameLocation: {},
+    dateOfGame: "",
+    startTime: "",
+    endTime: "",
+    cancellationDeadline: "",
+    minPlayers: 2,
+    maxPlayers: 2,
+    preferredSkillLevels: [],
+    equipmentInfo: "",
+    moreInfo: "",
+    currentPlayers: []
+}
+
 const game = (
   state = {
+    _id: "",
+    type: "game",
+    created: "",
     sport: "",
     gameCreator: "",
     preferredContact: "",
@@ -261,6 +305,37 @@ const game = (
   action
 ) => {
   switch (action.type) {
+    case SET_GAME_FROM_DATABASE:
+      return action.payload
+    case SET_GAME_ID_TO_STATE:
+        return merge(state, {_id: action.payload })
+
+    case SET_GAME_CREATED:
+      return merge(state, {created: action.payload })
+    case SET_GAME_CREATOR:
+      return merge(state, {gameCreator: action.payload })
+    case SET_PREFERRED_CONTACT:
+      return merge(state, {preferredContact: action.payload })
+
+    //Previously used to add entire player object to currentPlayer property.
+    case SET_CURRENT_PLAYER:
+      return merge(state, {currentPlayers: append(action.payload, state.currentPlayers)})
+
+    //Occurs on Create Game (Component Did Mount) to set creator as current player
+    case SET_BASIC_PLAYER_INFO:
+      return (merge(state, {currentPlayers: [action.payload]}))
+
+    case SET_NEW_PLAYER:
+      return merge(state, {currentPlayers: append(action.payload, state.currentPlayers)})
+
+    case SET_REV_OF_UPDATED_GAME:
+      return merge(state, {_rev: action.payload })
+
+
+
+    case SET_GAME_ID:
+      return merge(state, {_id: action.payload })
+
     case SET_GAME_SPORT:
       return merge(state, {sport: action.payload })
     case SET_GAME_LOCATION:
@@ -293,14 +368,40 @@ const game = (
     case SET_GAME_MORE_INFO:
       return merge(state, {moreInfo: action.payload})
     case RESET_GAME:
-      return state
+      return gameInitialState
     default:
       return state
   }
 }
 
+const playerInitialState = {
+  _id: "",
+  user_id: "",
+  type: "",
+  firstName: "",
+  lastName: "",
+  email: "",
+  phone: "",
+  streetAddress: "",
+  city: "",
+  state: "",
+  zipcode: "",
+  gender: "",
+  age: "",
+  bio: "",
+  picture: "",
+  gamesCreated: [],
+  gamesJoined: [],
+  previousGames: [],
+  myGames: []
+
+}
+
 const player = (
   state = {
+    _id: "",
+    user_id: "",
+    type: "",
     firstName: "",
     lastName: "",
     email: "",
@@ -312,13 +413,23 @@ const player = (
     gender: "",
     age: "",
     bio: "",
+    picture: "",
     gamesCreated: [],
     gamesJoined: [],
-    previousGames: []
+    previousGames: [],
+    myGames: []
   },
   action
 ) => {
   switch (action.type) {
+    case RESET_PLAYER:
+      return playerInitialState
+    case SET_PLAYER_FROM_DATABASE:
+      return action.payload
+    case SET_PLAYER_USER_ID:
+      return merge(state, {user_id: action.payload })
+    case SET_PLAYER_USER_PICTURE:
+      return merge(state, {picture: action.payload })
     case SET_PLAYER_FIRST_NAME:
       return merge(state, {firstName: action.payload })
     case SET_PLAYER_LAST_NAME:
@@ -341,6 +452,19 @@ const player = (
       return merge(state, {age: action.payload })
     case SET_PLAYER_BIO:
       return merge(state, {bio: action.payload })
+
+
+    //Occurs on Player Join
+    case SET_GAME_TO_MY_GAMES:
+      return merge(state, {myGames: append(action.payload, state.myGames)})
+
+    case SET_REV_OF_UPDATED_PLAYER:
+      return merge(state, {_rev: action.payload })
+
+
+
+    case LOAD_PLAYER:
+      return action.payload
     default:
       return state
     }
@@ -368,7 +492,21 @@ const store = createStore(combineReducers({
   games: games,
   locations: locations,
   player: player,
-  players: players
+  players: players,
+  lock: lockReducer,
+  auth: authReducer,
+  user: (state = {}, action) => {
+  switch (action.type) {
+    case 'SET_USER':
+      return action.payload
+    case 'CLEAR_USER':
+      return {}
+    default:
+      return state
+    }
+  }
 }))
+
+authListener(store.dispatch)
 
 export default store

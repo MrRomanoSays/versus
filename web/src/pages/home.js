@@ -1,32 +1,33 @@
 import React from 'react'
 
-import NavBar from '../components/navigation-bar'
+import NavBarLogin from '../components/navigation-bar-login'
 import SplashPage from '../components/splash-page'
 import backgroundImage from '../images/splash-page-man.jpg'
 
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 const Home = function (props) {
   return (
     <div>
-      <NavBar
-        link1Title="How it works"
-        link1Url="/about/versus"
 
-        link2Title="Contact Creator"
-        link2Url="/about/creator"
+      <NavBarLogin
+        auth={props.auth}
+        playerAvatar={props.user.picture}
+        
       />
       <SplashPage
         backgroundImage={backgroundImage}
         title="Versus"
         subheadline="The quick and easy way to find local competition that fits your interests and your schedule."
-        primaryButton="Sign Up"
-        primaryButtonUrl=""
-        secondaryButton="Sign In"
-        secondaryButtonUrl="/dashboard"
       />
+
     </div>
 
   )
 }
 
-export default Home
+const connector = connect(state=>state)
+
+
+export default connector(Home)

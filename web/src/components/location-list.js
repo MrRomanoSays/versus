@@ -14,8 +14,8 @@ const LocationList = function (props) {
 
   const locationToListView = function (location) {
     return (
-      <li className="list pb4" key={location.name}>
-        <div className={`cf avenir bt b--black-60 bw1 ${props.gameLocation === location && 'bg-light-blue'}`}
+      <li className="pb4" key={location.name}>
+        <div className={`cf avenir bt b--black-60 bw1 ${props.gameLocation === location && 'bg-light-yellow'}`}
         onClick={e => props.setLocation(location)}
         >
 
@@ -81,7 +81,7 @@ const LocationList = function (props) {
       />
 
       <hr />
-        <ul>
+        <ul className="list pl0">
           {compose(
             map(locationToListView),
             filter(locationBySport)

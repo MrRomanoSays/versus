@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { equals } from 'ramda'
+import { equals, set, lensProp, append, head, omit  } from 'ramda'
 
 
 import TextField from '../components/form-text-field'
@@ -35,280 +35,306 @@ import LocationList from '../components/location-list'
 import PlayersAndSkill from '../components/players-and-skill'
 
 import AdditionalInfo from '../components/additional-info'
+import LoggedOutQue from '../components/logged-out-que'
 
 
-const postGame = (game) => {
+const postGame = (game, idToken) => {
    return fetch(`http://localhost:8080/games`, {
     headers: {
-      "Content-Type": "application/json"
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + idToken
     },
     method: "POST",
     body: JSON.stringify(game)
   })
 }
 
+const updatePlayer = (player, idToken) => {
+   return fetch(`http://localhost:8080/players/${player._id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + idToken
+    },
+    method: "PUT",
+    body: JSON.stringify(player)
+  })
+}
 
-const CreateGame = function (props) {
+const getUpdatedPlayer = (player, idToken) => {
+   return fetch(`http://localhost:8080/players/${player._id}`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: 'Bearer ' + idToken
+    },
+    method: "GET"
 
-  return (
-    <div>
-      {equals(props.view, 'step1') && (
-        <View title="Pick Sport"
-          headline="What would you like to play?"
+  })
+}
 
-          body={
 
-            <PickSport
 
-            setSport={props.setSport}
-            sport={props.game.sport}
+class CreateGame extends React.Component {
 
-            image1={volleyball}
-            image1Description="Volleyball"
+  componentDidMount () {
 
-            image2={tennis}
-            image2Description="Tennis"
+    this.props.setGameCreator(this.props.player)
+    this.props.setPreferredContact(this.props.player.phone)
+    this.props.setCurrentPlayer(this.props.player)
 
-            image3={golf}
-            image3Description="Golf"
+    this.props.setGameCreated(new Date().toISOString())
 
-            image4={baseball}
-            image4Description="Baseball"
+  }
+  render () {
+    return (
 
-            image5={rugby}
-            image5Description="Rugby"
+      !this.props.auth ?
 
-            image6={soccer}
-            image6Description="Soccer"
+        <LoggedOutQue
+          auth={(e) => {this.props.lock.show()}}
+        />
 
-            image7={basketball}
-            image7Description="Basketball"
+        :
 
-            image8={hockey}
-            image8Description="Hockey"
-          />}
-          buttonCenter={<Button
-            buttonText="Cancel"
-            onClick= {e => {
-              props.reset()
-              props.history.push('/dashboard')
-            }}
+
+      <div>
+        {equals(this.props.view, 'step1') && (
+          <View title="Pick Sport"
+            headline="What would you like to play?"
+
+            body={
+
+              <PickSport
+
+              setSport={this.props.setSport}
+              sport={this.props.game.sport}
+
+              image1={volleyball}
+              image1Description="Volleyball"
+
+              image2={tennis}
+              image2Description="Tennis"
+
+              image3={golf}
+              image3Description="Golf"
+
+              image4={baseball}
+              image4Description="Baseball"
+
+              image5={rugby}
+              image5Description="Rugby"
+
+              image6={soccer}
+              image6Description="Soccer"
+
+              image7={basketball}
+              image7Description="Basketball"
+
+              image8={hockey}
+              image8Description="Hockey"
             />}
-          buttonRight={<ButtonForward
-            onClick={e => props.next('step2')}
-            />}
+            buttonCenter={<Button
+              buttonText="Cancel"
+              onClick= {e => {
+                this.props.reset()
+                this.props.resetGame()
+                this.props.history.push('/dashboard')
+              }}
+              />}
+            buttonRight={<ButtonForward
+              onClick={e => this.props.next('step2')}
+              />}
+            >
+
+          </View>
+        )}
+
+        {equals(this.props.view, 'step2') && (
+          <View title="Pick Day and Time"
+            headline="When would you like to play?"
+
+            body={
+
+              <ShowDate
+                currentGameDate=
+                  {this.props.game.dateOfGame}
+
+                currentGameTime=
+                  {moment(`${this.props.game.startTime}`, `HH:mm`).format(`h:mm a`)}
+
+                cancellationDeadline=
+                  {moment(`${this.props.game.cancellationDeadline}`, `HH:mm`).format(`h:mm a`)}
+
+                calendar=
+                  {<DatePicker
+                  handleChange={this.props.setGameDate}
+                  />}
+
+                gameClockStart=
+                  {<SetTime
+                    selectedTime={this.props.game.startTime}
+                    onTimeChange={this.props.setGameTime}
+                  />}
+
+                gameClockCancel=
+                  {<SetTime
+                    selectedTime={this.props.game.cancellationDeadline}
+                    onTimeChange={this.props.setCancellationDeadline}
+                    colorPalette="dark"
+                  />}
+                />
+            }
+
+
+            buttonLeft={<ButtonBack
+              onClick={e => this.props.previous('step1')}
+              />}
+            buttonCenter={<Button
+              buttonText="Cancel"
+              onClick= {e => {
+                this.props.reset()
+                this.props.resetGame()
+                this.props.history.push('/dashboard')
+              }}
+              />}
+            buttonRight={<ButtonForward
+              onClick={e => this.props.next('step3')}
+              />}
+
+
           >
 
-        </View>
-      )}
+          </View>
+        )}
 
-      {equals(props.view, 'step2') && (
-        <View title="Pick Day and Time"
-          headline="When would you like to play?"
+        {equals(this.props.view, 'step3') && (
+          <View title="Pick Location"
+            headline="Where would you like to play?"
 
-          body={
-
-            <ShowDate
-              currentGameDate=
-                {props.game.dateOfGame}
-
-              currentGameTime=
-                {moment(`${props.game.startTime}`, `HH:mm`).format(`h:mm a`)}
-
-              cancellationDeadline=
-                {moment(`${props.game.cancellationDeadline}`, `HH:mm`).format(`h:mm a`)}
-
-              calendar=
-                {<DatePicker
-                handleChange={props.setGameDate}
-                />}
-
-              gameClockStart=
-                {<SetTime
-                  selectedTime={props.game.startTime}
-                  onTimeChange={props.setGameTime}
-                />}
-
-              gameClockCancel=
-                {<SetTime
-                  selectedTime={props.game.cancellationDeadline}
-                  onTimeChange={props.setCancellationDeadline}
-                  colorPalette="dark"
-                />}
-              />
-          }
+            body={<LocationList
+              allLocations={this.props.locations}
+              setLocation={this.props.setLocation}
+              location={this.props.location.name}
+              gameLocation={this.props.game.gameLocation}
+              game={this.props.game.sport}
+              />}
 
 
-
-          buttonLeft={<ButtonBack
-            onClick={e => props.previous('step1')}
-            />}
-          buttonCenter={<Button
-            buttonText="Cancel"
-            onClick= {e => {
-              props.reset()
-              props.history.push('/dashboard')
-            }}
-            />}
-          buttonRight={<ButtonForward
-            onClick={e => props.next('step3')}
-            />}
-
-
-        >
-
-        </View>
-      )}
-
-      {equals(props.view, 'step3') && (
-        <View title="Pick Location"
-          headline="Where would you like to play?"
-
-          body={<LocationList
-            allLocations={props.locations}
-            setLocation={props.setLocation}
-            location={props.location.name}
-            gameLocation={props.game.gameLocation}
-            game={props.game.sport}
-            />}
-
-
-          buttonLeft={<ButtonBack
-            onClick={e => props.previous('step2')}
-            />}
-          buttonCenter={<Button
-            buttonText="Cancel"
-            onClick= {e => {
-              props.reset()
-              props.history.push('/dashboard')
-            }}
-            />}
-          buttonRight={<ButtonForward
-            onClick={e => props.next('step4')}
-            />}
-
-
-        >
-        </View>
-      )}
-
-
-      {equals(props.view, 'step4') && (
-        <View title="Your Competition"
-          headline="What are your game parameters?"
-
-
-
-          body={
-            <PlayersAndSkill
-              setSkillLevel={props.setSkillLevel}
-              skillLevel={props.game.preferredSkillLevels}
-
-              addMinPlayer={props.addMinPlayer}
-              subtractMinPlayer={props.subtractMinPlayer}
-              currentMinCount={props.game.minPlayers}
-              currentMaxCount={props.game.maxPlayers}
-              addMaxPlayer={props.addMaxPlayer}
-              subtractMaxPlayer={props.subtractMaxPlayer}
-              setMinPlayers={props.setMinPlayers}
-              setMaxPlayers={props.setMaxPlayers}
-
-            />}
-
-          buttonLeft={<ButtonBack
-            onClick={e => props.previous('step3')}
-            />}
-          buttonCenter={<Button
-            buttonText="Cancel"
-            onClick= {e => {
-              props.reset()
-              props.history.push('/dashboard')
-            }}
-            />}
-          buttonRight={<ButtonForward
-            onClick={e => props.next('step5')}
-            />}
-        >
-        </View>
-      )}
-
-
-
-      {equals(props.view, 'step5') && (
-        <View title="Additional Info"
-          headline="Any other details?"
-
-          body={<AdditionalInfo
-              equipmentValue={props.game.equipmentInfo}
-              equipmentHandleChange={e => props.setEquipment(e.target.value)}
-
-              moreInfoValue={props.game.moreInfo}
-              moreInfoHandleChange={e => props.setMoreInfo(e.target.value)}
-            />}
-
-          buttonLeft={<ButtonBack
-            onClick={e => props.previous('step4')}
-            />}
-          buttonCenter={<Button
-            buttonText="Cancel"
-            onClick= {e => {
-              props.reset()
-              props.history.push('/dashboard')
-            }}
-            />}
+            buttonLeft={<ButtonBack
+              onClick={e => this.props.previous('step2')}
+              />}
+            buttonCenter={<Button
+              buttonText="Cancel"
+              onClick= {e => {
+                this.props.reset()
+                this.props.resetGame()
+                this.props.history.push('/dashboard')
+              }}
+              />}
             buttonRight={<ButtonForward
-              buttonText="Create Game"
-              onClick= {
-                props.addGame(props.history, props.game)}
-            />}
+              onClick={e => this.props.next('step4')}
+              />}
 
 
-        >
-
-        </View>
-      )}
-
+          >
+          </View>
+        )}
 
 
-
-
+        {equals(this.props.view, 'step4') && (
+          <View title="Your Competition"
+            headline="What are your game parameters?"
 
 
 
+            body={
+              <PlayersAndSkill
+                setSkillLevel={this.props.setSkillLevel}
+                skillLevel={this.props.game.preferredSkillLevels}
+
+                addMinPlayer={this.props.addMinPlayer}
+                subtractMinPlayer={this.props.subtractMinPlayer}
+                currentMinCount={this.props.game.minPlayers}
+                currentMaxCount={this.props.game.maxPlayers}
+                addMaxPlayer={this.props.addMaxPlayer}
+                subtractMaxPlayer={this.props.subtractMaxPlayer}
+                setMinPlayers={this.props.setMinPlayers}
+                setMaxPlayers={this.props.setMaxPlayers}
+
+              />}
+
+            buttonLeft={<ButtonBack
+              onClick={e => this.props.previous('step3')}
+              />}
+            buttonCenter={<Button
+              buttonText="Cancel"
+              onClick= {e => {
+                this.props.reset()
+                this.props.resetGame()
+                this.props.history.push('/dashboard')
+              }}
+              />}
+            buttonRight={<ButtonForward
+              onClick={e => {
+                this.props.next('step5')
+                !this.props.game._rev ? this.props.setGameId(`game_${this.props.game.sport.toLowerCase()}_${this.props.game.gameCreator._id}_${this.props.game.created}`) : null
+              }}
+              />}
+          >
+          </View>
+        )}
 
 
-      {equals(props.view, 'stepFinal') && (
-        <View title="Final Step"
-          headline="Final Step"
-          buttonLeft={<ButtonBack
-            onClick= {e => props.previous('stepLast')}
-          />}
-          buttonCenter={<Button
-            buttonText="Cancel"
-            onClick= {e => {
-              props.reset()
-              props.history.push('/dashboard')
-            }}
-          />}
-          buttonRight={<ButtonForward
-            buttonText="Create Game"
-            onClick= {e => {
-              props.add(props.game)
-              props.reset()
-              props.history.push('/dashboard')
-            }}
-          />}
-        >
-          {/*
-          <ViewPickSport
-            ...with attributes...
-          />
-          */}
-        </View>
-      )}
-    </div>
-  )
+
+        {equals(this.props.view, 'step5') && (
+          <View title="Additional Info"
+            headline="Any other details?"
+
+            body={<AdditionalInfo
+                equipmentValue={this.props.game.equipmentInfo}
+                equipmentHandleChange={e => this.props.setEquipment(e.target.value)}
+
+                moreInfoValue={this.props.game.moreInfo}
+                moreInfoHandleChange={e => this.props.setMoreInfo(e.target.value)}
+              />}
+
+            buttonLeft={<ButtonBack
+              onClick={e => this.props.previous('step4')}
+              />}
+            buttonCenter={<Button
+              buttonText="Cancel"
+              onClick= {e => {
+                this.props.reset()
+                this.props.resetGame()
+                this.props.history.push('/dashboard')
+              }}
+              />}
+              buttonRight={<ButtonForward
+                buttonText="Create Game"
+                onClick= {
+                  this.props.addGame(this.props.history, this.props.game, this.props.auth.idToken, this.props.player)
+                }
+              />}
+          >
+
+          </View>
+        )}
+
+
+
+
+
+      </div>
+
+
+
+
+
+
+    )
 }
+}
+
+
 
 
 const MapStateToProps = function (state) {
@@ -321,23 +347,48 @@ const MapActionsToProps = function (dispatch) {
       dispatch({ type: "RESET" })
       dispatch({ type: "RESET_GAME" })
     },
+    resetGame: () => { dispatch({ type: "RESET_GAME" }) },
+
+    setGameCreator: (player) => dispatch({ type: "SET_GAME_CREATOR", payload: omit(['_rev', 'gamesCreated', 'myGames', 'streetAddress', 'type'], player) }),
+    setPreferredContact: (playerPhoneNumber) => dispatch({ type: "SET_PREFERRED_CONTACT", payload: playerPhoneNumber }),
+    setCurrentPlayer: (player) => {
+      const basicPlayerInfo = {
+        _id: player._id,
+        picture: player.picture,
+        shortName: `${player.firstName} ${head(player.lastName)}`,
+        firstName: player.firstName,
+        lastName: player.lastName
+      }
+      dispatch({ type: "SET_BASIC_PLAYER_INFO", payload: basicPlayerInfo })
+    },
+    setGameCreated: (time) => dispatch({ type: "SET_GAME_CREATED", payload: time }),
+    setGameId: (gameId) => dispatch({ type: "SET_GAME_ID", payload: gameId }),
+
     previous: (view) => dispatch({ type: "PREVIOUS", payload: view }),
     next: (view) => dispatch({ type: "NEXT", payload: view }),
-    addGame: (history, game) => (e) => {
-      postGame(game)
+    addGame: (history, game, idToken, player) => (e) => {
+      postGame(game, idToken)
         .then(res => res.json())
         .then(res => {
           if (res.id) {
+
+
+            const myGamesLens = lensProp('myGames')
+            const playerGames = append(game._id, player.myGames)
+            const playerWithUpdatedGame = set(myGamesLens, playerGames, player)
+            updatePlayer(playerWithUpdatedGame, idToken)
+
+            getUpdatedPlayer(player, idToken)
+
             dispatch({ type: "RESET" })
             dispatch({ type: "RESET_GAME" })
             history.push('/dashboard')
+
           } else {
-            alert('Error saving to the database.')
+            alert('Error saving game to the database.')
           }
         })
-        .catch(err => console.log(err.message))
     },
-
 
     setSport: (sportName) => dispatch({ type: "SET_GAME_SPORT", payload: sportName }),
     setLocation: (locationName) => dispatch({ type: "SET_GAME_LOCATION", payload: locationName }),

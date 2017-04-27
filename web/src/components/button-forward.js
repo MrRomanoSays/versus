@@ -3,7 +3,7 @@ import React from 'react'
 const ButtonForward = function (props) {
   return (
     <div>
-      <div className="no-underline black bg-animate hover-bg-dark-red hover-white inline-flex items-center pa2 ba border-box" onClick={props.onClick}>
+      <div className="pointer no-underline bg-gold hover-bg-yellow bg-animate inline-flex items-center pa2 ba border-box" onClick={props.onClick}>
         <span className="">{props.buttonText}</span>
         <svg className="w1" data-icon="chevronRight" viewBox="0 0 32 32" style={{fill: 'currentcolor'}}>
           <title>chevronRight icon</title>
@@ -15,3 +15,11 @@ const ButtonForward = function (props) {
 }
 
 export default ButtonForward
+
+
+// import ButtonForward from ''
+// 
+// <ButtonForward
+//   onClick=
+//   buttonText=
+// />

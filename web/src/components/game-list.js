@@ -1,6 +1,9 @@
 import React from 'react'
-import { map } from 'ramda'
+import { pathOr, map } from 'ramda'
 import moment from 'moment'
+
+import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 
 import Header from './header'
 import ButtonList from './button-list'
@@ -9,71 +12,75 @@ import ButtonList from './button-list'
 const GameList = function (props) {
   const gameToListView = function (game) {
     return (
-      <li className="list pr4 pb4" key={game.gameCreator+game.sport+game.startTime}>
-        <div className="cf avenir bt b--black-60 bw1">
-        <div className="fl w-80 ttu tracked f6 b pt3 pl3 pb3 bg-black-60 white ">
-          {game.sport} @ {game.gameLocation.name}<br />
-        </div>
-        <div className="fl w-20 tc pv3">ICON</div>
-        <div className="fl w-100 pl3 pb1 pt1 i link">
-          {`${game.gameLocation.streetAddress} ${game.gameLocation.city}, ${game.gameLocation.state} ${game.gameLocation.zipcode}`}
-        </div>
-        <div className="fl w-33">
-          <ButtonList
-            buttonText="Join Game"
-          />
-        </div>
-        <div className="fl w-33">
-          <ButtonList
-            buttonText="More Info"
-          />
-        </div>
-        <div className="fl w-33">
-          <ButtonList
-            buttonText="Leave Game"
-          />
-        </div>
-        <div className="fl w-50 tc pv3">
-          <div className="w-50-ns w-100 fl mb2">
-            <div className="f6 fw4">Organizer:</div>
-            <div className="f4 fw6">{game.gameCreator}</div>
-          </div>
-          <div className="w-50-ns w-100 fl">
-            <div className="f6 fw4">Contact:</div>
-            <div className="f4 fw6">{game.preferredContact}</div>
-          </div>
-        </div>
-        <div className="fl w-50 tc pv3">
-          <div className="w-50-ns w-100 fl mb2">
-            <div className="f6 fw4">Start Time</div>
-            <div className="f4 fw6">{moment(`${game.startTime}`, `HH:mm`).format(`h:mm a`)}</div>
+      <li className="tc tl-ns pr2 pb4 avenir" key={`${game.gameCreator._id}_${game.sport}_${game.startTime}`}>
 
-          </div>
-          <div className="w-50-ns w-100 fl">
-            <div className="f6 fw4 ">End Time</div>
-            <div className="f4 fw6">{game.endTime ? moment(`${game.endTime}`, `HH:mm`).format(`h:mm a`) : 'Not Provided'}</div>
+        <div className="cf">
+              <div className="shadow-5 fl w-60-ns w-100 f4 bg-yellow mv0 ph3 ba b--gold">
+                <div className="pv1">
+                  <div className="pv2">
+                    <div className="f6 fw4 i">{pathOr("...", ["sport"], game)}</div>
+                    <div className="f4-l f5-m f6-s fw6">{pathOr("...", ["gameLocation", "name"], game)}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="fl w-40-ns w-100 f4 mv0 ttu tracked">
+                <div className="fl w-33-ns w-50 tc pv1 bg-black-80 white-90 ba b--black-05">
+                  <div className="pv2">
+                    <div className="f6 fw4">Min</div>
+                    <div className="f4-l f5-m f6-s fw6">{game.minPlayers}</div>
+                  </div>
+                </div>
+
+                <div className="fl w-33-ns w-50 tc pv1 bg-black-80 white-90 ba b--black-05">
+                  <div className="pv2">
+                    <div className="f6 fw4">Max</div>
+                    <div className="f4-l f5-m f6-s fw6">{game.maxPlayers}</div>
+                  </div>
+                </div>
+
+                <div className="fl w-34-ns w-100 tc pv1 bg-black-80 white-90 ba b--black-05">
+                  <div className="pv2">
+                    <div className="f6 fw4">Current</div>
+                    <div className="f4-l f5-m f6-s fw6">{game.currentPlayers.length < game.minPlayers ? `Need ${game.minPlayers-game.currentPlayers.length}` : game.currentPlayers.length >= game.minPlayers && game.currentPlayers.length <= game.maxPlayers ? `${game.maxPlayers-game.currentPlayers.length} spots left` : game.currentPlayers.length === game.maxPlayers ? `Full` : null }</div>
+                  </div>
+              </div>
+            </div>
+      </div>
 
 
-          </div>
-        </div>
-        <div className="fl w-100 w-70-ns pv2 tc">
-          <div className="f6 fw4">Skill Level</div>
-          <div className="f6 fw6">{game.preferredSkillLevels}</div>
-        </div>
-        <div className="fl w-33 w-10-ns tc pv2">
-          <div className="f6 fw4">Min</div>
-          <div className="f4 fw6">{game.minPlayers}</div>
-        </div>
-        <div className="fl w-33 w-10-ns tc pv2">
-          <div className="f6 fw4">Current</div>
-          <div className="f4 fw6">?</div>
-        </div>
-        <div className="fl w-33 w-10-ns tc pv2">
-          <div className="f6 fw4">Max</div>
-          <div className="f4 fw6">{game.maxPlayers}</div>
-        </div>
+      <div className="cf bb b--black-10 bw1">
+              <div className="fl w-100 w-30-m w-40-l  f4 mv0 ph3 bl b--black-05">
+                <div className="pv1">
+                  <div className="pv2 mt1 mb1">
+                      <div className="f6 fw4">{game.dateOfGame}</div>
+                      <div className="f4-l f5-m f6-s fw6">{moment(`${game.startTime}`, `HH:mm`).format(`h:mm a`)}</div>
+                  </div>
+                </div>
+              </div>
 
-        </div>
+              <div className="fl w-100 w-60-m w-50-l f4 mv0 ph3 bl b--black-05">
+                <div className="pv1 mt1 mb1">
+                  <div className="pv2">
+                      <div className="f6 fw4">Preferred Skill Level(s)</div>
+                      <div className="f4-l f5-m f6-s fw6">{pathOr("All Players Welcome", ["preferredSkillLevels"], game)}</div>
+                  </div>
+                </div>
+              </div>
+
+              <Link to={`/about/game/${game._id}`} className="fl w-100 w-10-ns f4 mv0 avenir ttu tracked link"
+                onClick={props.loadGameToState(game)}
+              >
+                <div className="br2 mt1 mb1 tc pv1 gold bl b--black-05 hover-yellow hover-gold bg-black-80">
+                  <div className="pv2">
+                    <div className="f6 fw4">MORE</div>
+                    <div className="f4 fw6">></div>
+                  </div>
+                </div>
+              </Link>
+              <div className="w-100"></div>
+
+      </div>
       </li>
 
 
@@ -82,10 +89,10 @@ const GameList = function (props) {
   return (
     <div>
       <Header
-        headline="Current Games"
+        headline={`Games (${pathOr("", ["allGames"], props).length})`}
       />
         <div>
-          <ul>
+          <ul className="list pl1">
             {map(gameToListView)(props.allGames)}
           </ul>
         </div>
@@ -93,4 +100,8 @@ const GameList = function (props) {
   )
 }
 
-export default GameList
+const connector = connect(state => state)
+
+
+
+export default connector(GameList)

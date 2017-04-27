@@ -20,15 +20,15 @@ const ContactMeHeader = function (props) {
 
                   <blockquote className="f6 f6-m f6-l lh-copy center">
                     <div className>
-                      <i className="fa pr1 ml1 fa-2x grow dim white-80 fa-linkedin-square" aria-hidden="true" />
-                      <i className="fa fa-3x grow dim white-80 fa-github-square" aria-hidden="true" />
-                      <a href="mailto:l.j.romano@gmail.com"><i className="fa pl1 fa-2x grow dim white-80 fa-envelope" aria-hidden="true" /></a><br />
+                      <a href="https://www.linkedin.com/in/lawrencejosephromano/" className="link white-80 pointer"><i className="fa pr1 ml1 fa-2x grow dim white-80 fa-linkedin-square" aria-hidden="true" /> </a>
+                      <a href="https://github.com/MrRomanoSays" className="link white-80 pointer"><i className="fa fa-3x grow dim white-80 fa-github-square" aria-hidden="true" /> </a>
+                      <a href="mailto:l.j.romano@gmail.com" className="link white-80 pointer"><i className="fa pl1 fa-2x grow dim white-80 fa-envelope" aria-hidden="true" /></a> <br />
                       <cite className="f6 ttu tracked fs-normal white-80"> Software Developer</cite><br />
 
 
-                      <i className="fa v-top pt1 pr1 fa-2x grow dim white-80 fa-flickr" aria-hidden="true" />
-                      <i className="dim fa v-top fa-3x grow  white-80 fa-codepen" aria-hidden="true" />
-                      <i className="fa v-top pt1 pl1 fa-2x grow dim white-80 fa-twitter-square" aria-hidden="true" />
+
+                      <a href="https://codepen.io/MrRomanosays/" className="link white-80 pointer"><i className="dim fa v-top fa-3x grow  white-80 fa-codepen" aria-hidden="true" /> </a>
+
                     </div>
                   </blockquote>
                 </div>
@@ -40,3 +40,9 @@ const ContactMeHeader = function (props) {
 }
 
 export default ContactMeHeader
+
+
+
+//
+// <i className="fa v-top pt1 pr1 fa-2x grow dim white-80 fa-flickr" aria-hidden="true" />
+// <i className="fa v-top pt1 pl1 fa-2x grow dim white-80 fa-twitter-square" aria-hidden="true" />

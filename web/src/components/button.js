@@ -3,7 +3,7 @@ import React from 'react'
 const Button = function (props) {
   return (
     <div>
-      <div className="f6 no-underline black bg-animate hover-bg-dark-red hover-white inline-flex items-center pa2 ba border-box"
+      <div className="pointer f6 no-underline white bg-animate dim hover-white inline-flex items-center pa2 ba border-box"
       onClick={props.onClick}>
         <span>{props.buttonText}</span>
       </div>
@@ -12,3 +12,13 @@ const Button = function (props) {
 }
 
 export default Button
+
+
+
+
+// import Button from ''
+//
+// <Button
+//   onClick=
+//   buttonText=
+// />

@@ -1,15 +1,25 @@
 import React from 'react'
 
+import NavBarLogin from '../components/navigation-bar-login'
 import ContactMeHeader from '../components/contact-me'
 import Header from '../components/header'
 import BodyText from '../components/body-text'
 import ButtonLinkBack from '../components/button-link-back'
 import Home from './home'
 
+import { pathOr } from 'ramda'
+
 const Contact = function (props) {
   return (
 
-      <div>
+    <div>
+
+    <NavBarLogin
+      auth={props.auth}
+      playerAvatar={pathOr("", ["user", "picture"], props)}
+
+    />
+
 
         <ContactMeHeader />
         <Header
@@ -21,13 +31,7 @@ const Contact = function (props) {
           The JRS Coding School provided a deep dive in Javascript with a consistent emphasis on functional programming."
         />
 
-        <div className="pl4">
-          <ButtonLinkBack
-            buttonText="Versus"
-            linkUrl="/"
-          />
-        </div>
-      </div>
+    </div>
 
 
   )

@@ -13,7 +13,9 @@
   "dependencies": {
     "body-parser": "^1.17.1",
     "cors": "^2.8.3",
+    "dotenv": "^4.0.0",
     "express": "^4.15.2",
+    "express-jwt": "^5.1.0",
     "node-http-error": "^1.1.0",
     "pouchdb-http": "^6.0.2",
     "pouchdb-mapreduce": "^6.1.2",
