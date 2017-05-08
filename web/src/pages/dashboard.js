@@ -3,16 +3,12 @@ import { connect } from 'react-redux'
 import { BrowserRouter, Link } from 'react-router-dom'
 import fetch from 'isomorphic-fetch'
 
-import moment from 'moment'
-import { head } from 'ramda'
 
 import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
-import Header from '../components/header'
 import ProfileQue from '../components/profile-que'
 import LoggedOutQue from '../components/logged-out-que'
 
 import GameList from '../components/game-list'
-import LocationList from '../components/location-list'
 
 
 const getGame = (game, idToken) => {

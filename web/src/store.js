@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 import { createStore, combineReducers, applyMiddleware } from 'redux'
-import { append, contains, merge, set, lensProp } from 'ramda'
+import { append, merge } from 'ramda'
 import { authReducer, lockReducer, authListener } from './auth'
 
 const PREVIOUS = "PREVIOUS"

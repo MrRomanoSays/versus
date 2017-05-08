@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Link, Route } from 'react-router-dom'
+import { BrowserRouter, Route } from 'react-router-dom'
 import 'tachyons/css/tachyons.css'
 
 import Home from './pages/home'
@@ -11,8 +11,6 @@ import ContactMe from './pages/contact'
 import HowItWorks from './pages/how-it-works'
 import GameView from './pages/game-view'
 import { connect } from 'react-redux'
-
-import {pathOr} from 'ramda'
 
 const App = function (props) {
   return (

@@ -1,11 +1,33 @@
 import React from 'react'
+import { map } from 'ramda'
+
+
+
 
 const BodyText = function (props) {
+
+  const itemFormatter = function (item) {
+    return (
+      <li className="list pa1">{item}</li>
+    )
+  }
+
+  const listFormatter = function (listArray) {
+    return (
+          <li className="fl lh-copy w-100 w-33-ns" key={listArray[0]}>
+          <b className="db f5 ml2">{listArray[0]}</b>
+          <span className="bl bb br b--black-10 f5 db pa2 ma2">
+            {map(itemFormatter, listArray[1])}</span>
+          </li>
+        )
+    }
+
   return (
     <div>
-      <div className="fl w-100 pv1 pl4 pr4">
-          <div className="h-copy">
-            <p>{props.text}</p>
+      <div className="fl w-100 pv1">
+          <div className="avenir lh-copy">
+            <div className="">{props.text}</div>
+            <ul className="list pl0">{props.list ? map(listFormatter, props.list) : null}</ul>
           </div>
       </div>
     </div>
