@@ -1,7 +1,9 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import {pathOr} from 'ramda'
 
-import NavBarLogin from '../components/navigation-bar-loggedIn'
+import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
+import NavBarLogin from '../components/navigation-bar-login'
 
 import BackgroundImageWithBanner from '../components/background-image-with-banner'
 import backgroundImage from '../images/tall-building-with-hoop.jpg'
@@ -12,12 +14,35 @@ import BodyText from '../components/body-text'
 const HowItWorks = function (props) {
   return (
     <div>
+    {
+    props.auth ?
 
-      <NavBarLogin
-        auth={props.auth}
-        playerAvatar={props.user.picture}
+    <NavBarLoggedIn
+      auth={props.auth}
+      userId={props.player._id}
+      player={props.player}
+      playerAvatar={props.user.picture}
+      goToDashboard={true}
+    />
 
-      />
+    :
+
+    props.match.url === "/about/versus" ?
+
+    <NavBarLogin
+      auth={props.auth}
+      playerAvatar={pathOr("", ["user", "picture"], props)}
+      back={true}
+    />
+
+    :
+
+    <NavBarLogin
+      auth={props.auth}
+      playerAvatar={pathOr("", ["user", "picture"], props)}
+      back={false}
+    />
+  }
 
       <BackgroundImageWithBanner
         backgroundImage={backgroundImage}

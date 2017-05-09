@@ -1,6 +1,8 @@
 import React from 'react'
+import { connect } from 'react-redux'
 
 import NavBarLogin from '../components/navigation-bar-login'
+import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
 import ContactMeHeader from '../components/contact-me'
 import Header from '../components/header'
 import BodyText from '../components/body-text'
@@ -14,11 +16,35 @@ const Contact = function (props) {
 
     <div>
 
+    {
+    props.auth ?
+
+    <NavBarLoggedIn
+      auth={props.auth}
+      userId={props.player._id}
+      player={props.player}
+      playerAvatar={props.user.picture}
+      goToDashboard={true}
+    />
+
+    :
+
+    props.match.url === "/about/creator" ?
+
     <NavBarLogin
       auth={props.auth}
       playerAvatar={pathOr("", ["user", "picture"], props)}
-
+      back={true}
     />
+
+    :
+
+    <NavBarLogin
+      auth={props.auth}
+      playerAvatar={pathOr("", ["user", "picture"], props)}
+      back={false}
+    />
+  }
 
         <ContactMeHeader />
 
@@ -76,4 +102,6 @@ const Contact = function (props) {
   )
 }
 
-export default Contact
+const connector = connect(state=>state)
+
+export default connector(Contact)

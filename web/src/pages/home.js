@@ -13,6 +13,7 @@ const Home = function (props) {
       <NavBarLogin
         auth={props.auth}
         playerAvatar={props.user.picture}
+        back={false}
 
       />
       <SplashPage

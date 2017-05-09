@@ -2,6 +2,8 @@ import React from 'react'
 import { BrowserRouter, Link } from 'react-router-dom'
 
 import ButtonFontAwesome from './button-font-awesome'
+import ButtonBack from './button-back'
+
 
 const NavBarLogin = function (props) {
   return (
@@ -53,6 +55,7 @@ const NavBarLogin = function (props) {
       <div>
           <nav className="ttu tracked avenir fw4 dt w-100 border-box pa2 ph5-l bg-black">
             <div className="tc">
+              {props.back === true ? <Link to="/" className="ba fl mt1 mb2 link dim white-90 pa1 f6 f5-l mr2">VS</Link> : null}
               <Link to="/about/versus" className="ba fr mt1 mb2 link dim white-90 pa1 f6 f5-l mr2">How VS Works</Link>
               <Link to="/about/creator" className="ba fr mt1 mb2 link dim white-90 pa1 f6 f5-l mr2">Contact Creator</Link>
             </div>
@@ -70,7 +73,20 @@ export default NavBarLogin
 
 
 // <NavBarLogin
-// 
+//
 //
 //
 // />
+
+//SAVE
+/*
+<div>
+    <nav className="ttu tracked avenir fw4 dt w-100 border-box pa2 ph5-l bg-black">
+      <div className="tc">
+        props.back=true ? <Link to="/about/versus" className="ba fr mt1 mb2 link dim white-90 pa1 f6 f5-l mr2">VS</Link> : null
+        <Link to="/about/versus" className="ba fr mt1 mb2 link dim white-90 pa1 f6 f5-l mr2">How VS Works</Link>
+        <Link to="/about/creator" className="ba fr mt1 mb2 link dim white-90 pa1 f6 f5-l mr2">Contact Creator</Link>
+      </div>
+    </nav>
+</div>
+*/

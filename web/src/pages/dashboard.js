@@ -83,6 +83,7 @@ class Dashboard extends React.Component {
               :
               <div>
                 <h4 className="bg-black-70 white-90 pa3 athelas f3 tc tl-ns">Welcome {this.props.player.firstName}!</h4>
+                <section className="pl3">
                   <GameList
                     allGames={this.props.games}
                     game={this.props.game}
@@ -90,6 +91,7 @@ class Dashboard extends React.Component {
                       this.props.loadGame(this.props.history, game, this.props.idToken)
                     }}
                   />
+                </section>
               </div>
         }
 
