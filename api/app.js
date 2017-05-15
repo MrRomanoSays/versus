@@ -26,7 +26,7 @@ updateGame,
     getPlayers,
     getPlayer,
     addPlayer,
-updatePlayer,
+updatePlayer
 
 } = require('./' + dal)
 

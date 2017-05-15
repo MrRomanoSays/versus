@@ -130,9 +130,9 @@ const GameCard = function (props) {
 
     :
 
-    /* If player IS already listed as a current player show them Leave Game */
+    /* If the user/player has already joined the game, show them the "Leave Game" button */
 
-    contains(basicPlayerInfo, props.game.currentPlayers) ?
+    contains(basicPlayerInfo._id, props.game.currentPlayers) ?
 
     <div>
       <div className="mv1 mv0-ns fl w-100 w-50-ns tc"
@@ -157,11 +157,11 @@ const GameCard = function (props) {
 
     :
 
-    /* If player is NOT listed as a current player show Join Game */
+    /* If user/player has not joined the current game then show the "Join Game" button */
 
     <div className="mv1 mv0-ns fl w-100 tc"
       onClick={e => {
-        if (!contains(basicPlayerInfo, props.game.currentPlayers)) {
+        if (!contains(basicPlayerInfo._id, props.game.currentPlayers)) {
             props.updateGameWithNewPlayer(props.history, updatedGameWithPlayer, props.auth.idToken, props.player)
             props.updatePlayerWithNewGame(updatedPlayer, props.game._id, props.auth.idToken)
         }
