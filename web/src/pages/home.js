@@ -5,7 +5,6 @@ import SplashPage from '../components/splash-page'
 import backgroundImage from '../images/splash-page-man.jpg'
 
 import { connect } from 'react-redux'
-import { Link } from 'react-router-dom'
 
 const Home = function (props) {
   return (
@@ -14,7 +13,8 @@ const Home = function (props) {
       <NavBarLogin
         auth={props.auth}
         playerAvatar={props.user.picture}
-        
+        back={false}
+
       />
       <SplashPage
         backgroundImage={backgroundImage}

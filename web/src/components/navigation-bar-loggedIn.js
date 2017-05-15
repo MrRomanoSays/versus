@@ -57,9 +57,7 @@ const player = props.player
                 props.dispatch({type: 'RESET_GAME'})
             }}
 
-
-
-
+          /* RIGHT SIDE OF NAVIGATION BAR */
 
           >
             <ButtonFontAwesome
@@ -94,6 +92,7 @@ const player = props.player
 </nav>
 
 </div>
+
     :
 
     <div>
@@ -134,12 +133,21 @@ const player = props.player
 
 
 
-              <Link to="/editprofile" className="fr mt1 mb2 link dim white-90 pa1 f6 f5-l mr2">
+              props.goToDashboard === true &&
+
+              <Link to="/dashboard" className=" fr mt1 mb2 link dim white-90 pa1 f6 f5-l mr2"
+                onClick=
+                  {e => {
+                    props.dispatch({type: 'SET_PLAYER_USER_ID', payload: props.user.user_id})
+                    props.dispatch({type: 'SET_PLAYER_USER_PICTURE', payload: props.user.picture})
+                  }}
+              >
                 <ButtonFontAwesome
-                  iconName="fa-address-card-o"
+                  iconName="fa-tachometer"
                   iconSize="fa-2x"
                   iconTransformation=""
-                  title="Edit Player Profile"
+                  title="Dashboard"
+                  iconColor="yellow"
                 />
               </Link>
 

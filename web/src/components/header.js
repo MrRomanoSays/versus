@@ -2,9 +2,9 @@ import React from 'react'
 
 const Header = function (props) {
   return (
-      <header className="avenir pt3 pl3">
-        <div className="f2-l f3 tracked measure fw1">{props.headline}</div>
-        <div className="f4-l f5 fw2">{props.subheadline}</div>
+      <header className="avenir pt3">
+        <div className="gold f4 tracked measure fw3">{props.headline}</div>
+        <div className="athelas f5 fw1 i mt1 mb1">{props.subheadline}</div>
       </header>
   )
 }

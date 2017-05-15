@@ -6,7 +6,6 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 
 import Header from './header'
-import ButtonList from './button-list'
 
 
 const GameList = function (props) {
@@ -79,11 +78,8 @@ const GameList = function (props) {
                 </div>
               </Link>
               <div className="w-100"></div>
-
       </div>
       </li>
-
-
     )
   }
   return (

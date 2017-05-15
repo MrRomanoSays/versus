@@ -17,7 +17,6 @@ app.use(jwt({
   secret: process.env.AUTH0_SECRET
 }))
 
-app.get('/test', (req, res) => res.send('You are authorized!!!'))
 
 const {
     getGames,
@@ -44,13 +43,6 @@ const port = process.env.PORT || 8082
 
 
 
-//////////////////
-/////  TESTING
-//////////////////
-
-app.get('/', function(req, res) {
-    res.send('Welcome to the Versus API!')
-})
 
 ///////////////////////
 //   games

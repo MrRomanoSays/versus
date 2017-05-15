@@ -3,16 +3,12 @@ import { connect } from 'react-redux'
 import { BrowserRouter, Link } from 'react-router-dom'
 import fetch from 'isomorphic-fetch'
 
-import moment from 'moment'
-import { head } from 'ramda'
 
 import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
-import Header from '../components/header'
 import ProfileQue from '../components/profile-que'
 import LoggedOutQue from '../components/logged-out-que'
 
 import GameList from '../components/game-list'
-import LocationList from '../components/location-list'
 
 
 const getGame = (game, idToken) => {
@@ -87,6 +83,7 @@ class Dashboard extends React.Component {
               :
               <div>
                 <h4 className="bg-black-70 white-90 pa3 athelas f3 tc tl-ns">Welcome {this.props.player.firstName}!</h4>
+                <section className="pl3">
                   <GameList
                     allGames={this.props.games}
                     game={this.props.game}
@@ -94,6 +91,7 @@ class Dashboard extends React.Component {
                       this.props.loadGame(this.props.history, game, this.props.idToken)
                     }}
                   />
+                </section>
               </div>
         }
 

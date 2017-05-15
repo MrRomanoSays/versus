@@ -28,10 +28,7 @@ function getGame(gameId, cb) {
     })
 }
 
-
 function addGame(game, cb) {
-
-
     db.put(game, function(err, res) {
         if (err) return cb(err)
         cb(null, res)
@@ -44,20 +41,6 @@ function updateGame(game, cb) {
         cb(null, res)
     })
 }
-
-//EXAMPLE FROM POUCHDB SITE:
-db.get('mydoc', function(err, doc) {
-  if (err) { return console.log(err); }
-  db.put({
-    _id: 'mydoc',
-    _rev: doc._rev,
-    title: "Let's Dance"
-  }, function(err, response) {
-    if (err) { return console.log(err); }
-    // handle response
-  });
-});
-
 
 /////////////////////
 ////  players
@@ -81,7 +64,6 @@ function getPlayer(playerId, cb) {
     })
 }
 
-
 function addPlayer(player, cb) {
     player.type = "player"
     player.created = new Date().toISOString()
@@ -94,14 +76,12 @@ function addPlayer(player, cb) {
     })
 }
 
-
 function updatePlayer(player, cb) {
     db.put(player, function(err, res) {
         if (err) return cb(err)
         cb(null, res)
     })
 }
-
 
 /////////////////////////
 ////  HELPER FUNCTIONS
@@ -111,11 +91,8 @@ function prepID(id) {
   return id.replace(/ /g, "_")
 }
 
-
-
-
-
 const returnDoc = row => row.doc
+
 
 const dal = {
     getGames: getGames,
