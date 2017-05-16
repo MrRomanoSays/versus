@@ -2,11 +2,9 @@ import React from 'react'
 import { equals, toUpper, toLower, tail, head } from 'ramda'
 import { connect } from 'react-redux'
 
-import ButtonLinkBack from '../components/button-link-back'
 import ButtonBack from '../components/button-back'
 import ButtonForward from '../components/button-forward'
 import Button from '../components/button'
-
 
 import LoggedOutQue from '../components/logged-out-que'
 
@@ -297,7 +295,7 @@ const MapActionsToProps = function (dispatch) {
             dispatch({ type: "RESET" })
             history.push('/dashboard')
           } else {
-            alert('Error updating your profile in the database.')
+            alert('Error updating your profile in the database.  If you have another account on VS, make sure that each account uses different user details.  They cannot be entirely the same, or they will conflict.')
           }
         })
         .catch(err => console.log(err.message))

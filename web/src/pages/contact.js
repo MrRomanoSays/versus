@@ -6,8 +6,7 @@ import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
 import ContactMeHeader from '../components/contact-me'
 import Header from '../components/header'
 import BodyText from '../components/body-text'
-import ButtonLinkBack from '../components/button-link-back'
-import Home from './home'
+
 
 import { pathOr } from 'ramda'
 

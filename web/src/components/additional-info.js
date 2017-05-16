@@ -5,7 +5,7 @@ import SectionHeader from './section-header'
 
 const AdditionalInfo = function (props) {
   return (
-    <div>
+    <div className="pl3 pr3">
       <SectionHeader
         sectionTitle="Additional Info"
       />

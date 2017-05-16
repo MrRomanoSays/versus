@@ -1,19 +1,19 @@
 import React from 'react'
 
-import Header from './header'
+
 import SectionHeader from './section-header'
-
-
 
 const PlayersAndSkill = function (props) {
   return (
     <div>
 
-      {<SectionHeader
+      {<section className="pl3">
+        <SectionHeader
         headline={null}
         subHeadline={null}
         sectionTitle="Preferred Skill Level"
-      />}
+      />
+      </section>}
 
 
           <div className={`tr avenir fw3 mb2 mt4 pl1 w-25 bt bb br b--black-20 pa1 pr3 ${props.skillLevel === "Beginner" && 'bg-light-yellow bb bt br b--black '}`}
@@ -33,11 +33,13 @@ const PlayersAndSkill = function (props) {
             All Skill Levels
           </div>
 
-          {<SectionHeader
+          {<section className="pl3">
+          <SectionHeader
             headline={null}
             subHeadline={null}
             sectionTitle="Minimum Players"
-          />}
+          />
+          </section>}
 
     <div className="cf tc">
       <div className="avenir fw3 fl w-100  bl bt br b--black-10 gray pa1">Quick Pick</div>
@@ -55,7 +57,7 @@ const PlayersAndSkill = function (props) {
         <dd className=" f3 fw6 ml0">5</dd>
       </dl>
 
-        <dl className="bg-black-20 fl w-33">
+        <dl className="bg-light-yellow fl w-33">
           <dd className="avenir bl b--black-10 gray  f6 fw4 ml0">Min Players</dd>
           <dd className="avenir bl bb b--black-10  f3 fw6 ml0 ">{props.currentMinCount}</dd>
         </dl>
@@ -74,11 +76,13 @@ const PlayersAndSkill = function (props) {
         </dl>
       </div>
 
-        {<SectionHeader
+        {<section className="pl3">
+         <SectionHeader
           headline={null}
           subHeadline={null}
           sectionTitle="Maximum Players"
-        />}
+        />
+        </section>}
 
 <div className="cf tc">
         <div className="avenir fw3 gray fl w-100 pa1 bl bt br b--black-10">Quick Pick</div>
@@ -96,7 +100,7 @@ const PlayersAndSkill = function (props) {
           <dd className=" f3 fw6 ml0">18</dd>
         </dl>
 
-          <dl className="bg-black-20 fl w-33">
+          <dl className="bg-light-yellow fl w-33">
             <dd className="avenir gray bl b--black-10 f6 fw4 ml0">Max Players</dd>
             <dd className="bl bb b--black-10 f3 fw6 ml0 ">{props.currentMaxCount}</dd>
           </dl>

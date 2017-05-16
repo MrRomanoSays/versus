@@ -1,9 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { equals, set, lensProp, append, head, omit  } from 'ramda'
+import { equals, set, lensProp, append  } from 'ramda'
 
-
-import TextField from '../components/form-text-field'
 
 import View from '../components/view'
 import ButtonBack from '../components/button-back'
@@ -20,7 +18,6 @@ import rugby from '../images/icons/rugby.png'
 import tennis from '../images/icons/tennis.png'
 import volleyball from '../images/icons/volleyball.png'
 
-import PickDay from '../components/grid5-2'
 import DatePicker from '../components/date-picker'
 import ShowDate from '../components/show-date'
 import SetTime from '../components/time-picker'
@@ -67,22 +64,17 @@ const getUpdatedPlayer = (player, idToken) => {
       Authorization: 'Bearer ' + idToken
     },
     method: "GET"
-
   })
 }
-
 
 
 class CreateGame extends React.Component {
 
   componentDidMount () {
-
-    this.props.setGameCreator(this.props.player)
-    this.props.setPreferredContact(this.props.player.phone)
-    this.props.setCurrentPlayer(this.props.player)
-
+    this.props.setGameCreator(this.props.player._id)
+    this.props.setCurrentPlayer(this.props.player._id)
     this.props.setGameCreated(new Date().toISOString())
-
+    this.props.setPreferredContact(this.props.player.phone)
   }
   render () {
     return (
@@ -94,7 +86,6 @@ class CreateGame extends React.Component {
         />
 
         :
-
 
       <div>
         {equals(this.props.view, 'step1') && (
@@ -276,7 +267,7 @@ class CreateGame extends React.Component {
             buttonRight={<ButtonForward
               onClick={e => {
                 this.props.next('step5')
-                !this.props.game._rev ? this.props.setGameId(`game_${this.props.game.sport.toLowerCase()}_${this.props.game.gameCreator._id}_${this.props.game.created}`) : null
+                !this.props.game._rev ? this.props.setGameId(`game_${this.props.game.sport.toLowerCase()}_${this.props.player._id}_${this.props.game.created}`) : null
               }}
               />}
           >
@@ -349,18 +340,9 @@ const MapActionsToProps = function (dispatch) {
     },
     resetGame: () => { dispatch({ type: "RESET_GAME" }) },
 
-    setGameCreator: (player) => dispatch({ type: "SET_GAME_CREATOR", payload: omit(['_rev', 'gamesCreated', 'myGames', 'streetAddress', 'type'], player) }),
+    setGameCreator: (playerId) => dispatch({ type: "SET_GAME_CREATOR", payload: playerId }),
     setPreferredContact: (playerPhoneNumber) => dispatch({ type: "SET_PREFERRED_CONTACT", payload: playerPhoneNumber }),
-    setCurrentPlayer: (player) => {
-      const basicPlayerInfo = {
-        _id: player._id,
-        picture: player.picture,
-        shortName: `${player.firstName} ${head(player.lastName)}`,
-        firstName: player.firstName,
-        lastName: player.lastName
-      }
-      dispatch({ type: "SET_BASIC_PLAYER_INFO", payload: basicPlayerInfo })
-    },
+    setCurrentPlayer: (playerId) => dispatch({ type: "SET_BASIC_PLAYER_INFO", payload: playerId }),
     setGameCreated: (time) => dispatch({ type: "SET_GAME_CREATED", payload: time }),
     setGameId: (gameId) => dispatch({ type: "SET_GAME_ID", payload: gameId }),
 
@@ -371,8 +353,6 @@ const MapActionsToProps = function (dispatch) {
         .then(res => res.json())
         .then(res => {
           if (res.id) {
-
-
             const myGamesLens = lensProp('myGames')
             const playerGames = append(game._id, player.myGames)
             const playerWithUpdatedGame = set(myGamesLens, playerGames, player)

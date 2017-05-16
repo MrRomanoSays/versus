@@ -1,6 +1,5 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter, Link } from 'react-router-dom'
 import fetch from 'isomorphic-fetch'
 
 

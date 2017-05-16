@@ -1,11 +1,10 @@
 import React from 'react'
-import { BrowserRouter, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 import ButtonFontAwesome from './button-font-awesome'
 const NavBarLoggedIn = function (props) {
 
-const player = props.player
 
   return (
 

@@ -1,22 +1,18 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { BrowserRouter, Link } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import fetch from 'isomorphic-fetch'
-
-import moment from 'moment'
-
-import { head } from 'ramda'
 
 import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
 import LoggedOutQue from '../components/logged-out-que'
 
-import Header from '../components/header'
 import GameCard from '../components/card-game'
 
 
 class GameView extends React.Component {
   componentDidMount () {
 
+    //GET to DB for game details (not including game creator)
     fetch(`http://localhost:8080/games/${this.props.match.params.id}`, {
      headers: {
        "Content-Type": "application/json",
@@ -28,6 +24,29 @@ class GameView extends React.Component {
      .then(res => res._id ? this.props.dispatch({ type: "SET_GAME_FROM_DATABASE", payload: res }) : null )
      .catch(err => console.log(err))
 
+     //GET to DB for game creator
+     fetch(`http://localhost:8080/players/${this.props.player._id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: 'Bearer ' + this.props.auth.idToken
+      },
+      method: "GET"
+      })
+      .then(res => res.json())
+      .then(res => res ? this.props.dispatch({ type: "SET_GAME_CREATOR", payload: res }) : null )
+      .catch(err => console.log(err))
+
+     //GET to DB for all players that have joined this game (includes game creator)
+     fetch(`http://localhost:8080/allGamesForEveryPlayer/${this.props.match.params.id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: 'Bearer ' + this.props.auth.idToken
+      },
+      method: "GET"
+      })
+      .then(res => res.json())
+      .then(res => res ? this.props.dispatch({ type: "SET_GAME_CURRENT_ROSTER_FROM_DATABASE", payload: res }) : null )
+      .catch(err => console.log(err))
   }
 
   render () {
@@ -52,8 +71,9 @@ class GameView extends React.Component {
           auth={(e) => {this.props.lock.show()}}
         />
 
-        :
       // If game's max players has not been reached, the game details are shown
+      :
+
       this.props.game.currentPlayers.length < this.props.game.maxPlayers ?
 
         <GameCard
@@ -67,8 +87,8 @@ class GameView extends React.Component {
       :
 
         <div>
-          <h4 className="bg-black-70 white-90 pa3 athelas f3 tc tl-ns">So sorry, but the game shown below has reached the maximum number of players allowed.</h4>
-          <Link to="/dashboard">Click here to return to the Dashboard</Link>
+          <h4 className="bg-dark-red white-90 pa3 athelas f3 tc tl-ns">Sorry.  The game below has reached its player max.</h4>
+          <Link to="/dashboard" className="pl3 athelas">Click here to return to the Dashboard</Link>
           <GameCard />
         </div>
 

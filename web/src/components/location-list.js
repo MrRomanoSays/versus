@@ -2,10 +2,8 @@ import React from 'react'
 import { map, filter, compose, contains, toLower, length } from 'ramda'
 
 import Header from './header'
-import ButtonList from './button-list'
 
 const LocationList = function (props) {
-
 
   const locationBySport = function (location) {
     return contains(toLower(props.game), location.sports)
@@ -15,7 +13,7 @@ const LocationList = function (props) {
   const locationToListView = function (location) {
     return (
       <li className="pb4" key={location.name}>
-        <div className={`cf avenir bt b--black-60 bw1 ${props.gameLocation === location && 'bg-light-yellow'}`}
+        <div className={`cf avenir bt b--black-60 bw1 ${props.gameLocation.name === location.name && 'bg-light-yellow'}`}
         onClick={e => props.setLocation(location)}
         >
 
@@ -71,7 +69,7 @@ const LocationList = function (props) {
     )
   }
   return (
-    <div>
+    <div className="pl3">
       <Header
         headline={`Locations Supporting ${props.game} (${compose(
         length(),
@@ -85,8 +83,7 @@ const LocationList = function (props) {
           {compose(
             map(locationToListView),
             filter(locationBySport)
-          )
-            (props.allLocations)}
+          )(props.allLocations)}
         </ul>
 
     </div>

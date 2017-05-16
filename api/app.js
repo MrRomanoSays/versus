@@ -23,14 +23,13 @@ const {
     getGame,
     addGame,
 updateGame,
+listEveryGameForEveryPlayer,
     getPlayers,
     getPlayer,
     addPlayer,
 updatePlayer
 
 } = require('./' + dal)
-
-
 
 
 
@@ -79,6 +78,16 @@ app.put('/games/:id', function(req, res, next) {
 ///////////////////////
 //   players
 //////////////////////
+
+//Database returns a separate listing of every game for every player
+//:id is used to query result to find players of that unique game.
+app.get('/allGamesForEveryPlayer/:id', function(req, res, next) {
+  listEveryGameForEveryPlayer(req.params.id, function(err, resp) {
+    if (err) return next(new HTTPError(err.status, err.message, err))
+    res.status(200).send(resp)
+  })
+})
+
 
 app.get('/players', function(req, res, next) {
     getPlayers(function(err, resp) {

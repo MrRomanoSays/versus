@@ -25,6 +25,7 @@ const SET_GAME_CREATED="SET_GAME_CREATED"
 const SET_GAME_ID="SET_GAME_ID"
 
 const SET_GAME_FROM_DATABASE="SET_GAME_FROM_DATABASE"
+const SET_GAME_CURRENT_ROSTER_FROM_DATABASE="SET_GAME_CURRENT_ROSTER_FROM_DATABASE"
 
 const SET_GAME_TO_MY_GAMES="SET_GAME_TO_MY_GAMES"
 const SET_REV_OF_UPDATED_GAME="SET_REV_OF_UPDATED_GAME"
@@ -61,6 +62,7 @@ const SET_PLAYER_ZIPCODE="SET_PLAYER_ZIPCODE"
 const SET_PLAYER_GENDER="SET_PLAYER_GENDER"
 const SET_PLAYER_AGE="SET_PLAYER_AGE"
 const SET_PLAYER_BIO="SET_PLAYER_BIO"
+
 
 const locationDocuments = [{
   name: "Haut Gap Recreation Complex",
@@ -185,58 +187,6 @@ const locationDocuments = [{
   }
 ]
 
-const gameDocuments = [{
-  sport: "Tennis",
-  gameCreator: "Wilson R.",
-  preferredContact: "324-134-8796",
-  gameLocation: "Moultrie Playground",
-  dateOfGame: "4/15/2017",
-  startTime: "8:00 pm",
-  endTime: "10:00 pm",
-  cancellationDeadline: "6:00 pm",
-  minPlayers: 2,
-  maxPlayers: 4,
-  preferredSkillLevels: ["beginner", "intermediate", "advanced"],
-  equipmentProvided: ["Tennis balls"],
-  equipmentNeeded: "",
-  moreInfo: "Hoping for singles, but happy to play doubles if we have enough interest.  I usually find parking near Good Stuff.  Also, if anyone has fairly new tennis balls, it'd be great to have those.  Mine have played a few games...",
-  currentPlayers: []
-  },{
-  sport: "Basketball",
-  gameCreator: "Jill S.",
-  preferredContact: "324-400-9836",
-  gameLocation: "Milton Park",
-  dateOfGame: "2/05/2017",
-  startTime: "6:00 pm",
-  endTime: "8:00 pm",
-  cancellationDeadline: "2:00 pm",
-  minPlayers: 4,
-  maxPlayers: 10,
-  preferredSkillLevels: ["beginner", "intermediate"],
-  equipmentProvided: ["Basketball"],
-  equipmentNeeded: "",
-  moreInfo: "Happy to play with however many we have.  Half court or full is fine.  Just want to play.",
-  currentPlayers: []
-  },{
-  sport: "Baseball",
-  gameCreator: "Amira P.",
-  preferredContact: "202-324-0036",
-  gameLocation: "Moultrie Playground",
-  dateOfGame: "4/08/2017",
-  startTime: "2:00 pm",
-  endTime: "5:00 pm",
-  cancellationDeadline: "12:00 pm",
-  minPlayers: 6,
-  maxPlayers: 20,
-  preferredSkillLevels: ["beginner", "intermediate", "advanced"],
-  equipmentProvided: ["Baseballs", "Bat"],
-  equipmentNeeded: "",
-  moreInfo: "If we don't have many people we can run some drills or just play catch.  Maybe set up some batting practice with outfielders and a pitcher.",
-  currentPlayers: []
-  }]
-
-
-
 const games = (state=[], action) => {
   switch (action.type) {
     case LOAD_GAMES:
@@ -265,21 +215,23 @@ const locations = (state=locationDocuments, action) => {
 
 
 const gameInitialState = {
-    _id: "",
-    sport: "",
-    gameCreator: "",
-    preferredContact: "",
-    gameLocation: {},
-    dateOfGame: "",
-    startTime: "",
-    endTime: "",
-    cancellationDeadline: "",
-    minPlayers: 2,
-    maxPlayers: 2,
-    preferredSkillLevels: [],
-    equipmentInfo: "",
-    moreInfo: "",
-    currentPlayers: []
+  _id: "",
+  type: "game",
+  created: "",
+  sport: "",
+  gameCreator: "",
+  preferredContact: "",
+  gameLocation: {},
+  dateOfGame: "",
+  startTime: "",
+  endTime: "",
+  cancellationDeadline: "",
+  minPlayers: 2,
+  maxPlayers: 2,
+  preferredSkillLevels: [],
+  equipmentInfo: "",
+  moreInfo: "",
+  currentPlayers: []
 }
 
 const game = (
@@ -307,9 +259,12 @@ const game = (
   switch (action.type) {
     case SET_GAME_FROM_DATABASE:
       return action.payload
-    case SET_GAME_ID_TO_STATE:
-        return merge(state, {_id: action.payload })
+    case SET_GAME_CURRENT_ROSTER_FROM_DATABASE:
+      return merge(state, {currentPlayers: action.payload})
 
+    case SET_GAME_ID_TO_STATE:
+      return merge(state, {_id: action.payload })
+    
     case SET_GAME_CREATED:
       return merge(state, {created: action.payload })
     case SET_GAME_CREATOR:

@@ -3,8 +3,6 @@ import { connect } from 'react-redux'
 import { equals } from 'ramda'
 
 
-import TextField from '../components/form-text-field'
-
 import View from '../components/view'
 import ButtonBack from '../components/button-back'
 import Button from '../components/button'
@@ -20,8 +18,6 @@ import rugby from '../images/icons/rugby.png'
 import tennis from '../images/icons/tennis.png'
 import volleyball from '../images/icons/volleyball.png'
 
-import LoggedOutQue from '../components/logged-out-que'
-import PickDay from '../components/grid5-2'
 import DatePicker from '../components/date-picker'
 import ShowDate from '../components/show-date'
 import SetTime from '../components/time-picker'
@@ -94,7 +90,7 @@ const EditGame = function (props) {
           />}
           buttonCenter={<Button
             buttonText="Cancel"
-            onClick= {e => {
+            onClick={e => {
               props.reset()
               props.resetGame()
               props.history.push('/dashboard')
@@ -115,40 +111,32 @@ const EditGame = function (props) {
           body={
 
             <ShowDate
-              currentGameDate=
-                {props.game.dateOfGame}
-
+              currentGameDate={props.game.dateOfGame}
               currentGameTime=
                 {moment(`${props.game.startTime}`, `HH:mm`).format(`h:mm a`)}
-
               cancellationDeadline=
                 {moment(`${props.game.cancellationDeadline}`, `HH:mm`).format(`h:mm a`)}
-
               calendar=
                 {<DatePicker
                 handleChange={props.setGameDate}
                 />}
-
               gameClockStart=
                 {<SetTime
                   selectedTime={props.game.startTime}
                   onTimeChange={props.setGameTime}
                 />}
-
               gameClockCancel=
                 {<SetTime
                   selectedTime={props.game.cancellationDeadline}
                   onTimeChange={props.setCancellationDeadline}
                   colorPalette="dark"
                 />}
-              />
+            />
           }
-
-
 
           buttonLeft={<ButtonBack
             onClick={e => props.previous('step1')}
-            />}
+          />}
           buttonCenter={<Button
             buttonText="Cancel"
             onClick= {e => {
@@ -156,16 +144,13 @@ const EditGame = function (props) {
               props.resetGame()
               props.history.push('/dashboard')
             }}
-            />}
+          />}
           buttonRight={<ButtonForward
             onClick={e => props.next('step3')}
-            />}
-
-
+          />}
         >
-
         </View>
-      )}
+        )}
 
       {equals(props.view, 'step3') && (
         <View title="Pick Location"
@@ -178,7 +163,6 @@ const EditGame = function (props) {
             gameLocation={props.game.gameLocation}
             game={props.game.sport}
             />}
-
 
           buttonLeft={<ButtonBack
             onClick={e => props.previous('step2')}
@@ -194,8 +178,6 @@ const EditGame = function (props) {
           buttonRight={<ButtonForward
             onClick={e => props.next('step4')}
             />}
-
-
         >
         </View>
       )}
@@ -204,8 +186,6 @@ const EditGame = function (props) {
       {equals(props.view, 'step4') && (
         <View title="Your Competition"
           headline="What are your game parameters?"
-
-
 
           body={
             <PlayersAndSkill
@@ -242,7 +222,6 @@ const EditGame = function (props) {
       )}
 
 
-
       {equals(props.view, 'step5') && (
         <View title="Additional Info"
           headline="Any other details?"
@@ -271,16 +250,11 @@ const EditGame = function (props) {
               onClick= {
                 props.editGame(props.history, props.game, props.auth.idToken)}
             />}
-
-
         >
-
         </View>
       )}
 
-
     </div>
-
   )
 }
 

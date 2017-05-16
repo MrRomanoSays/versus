@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 import 'font-awesome/css/font-awesome.css'
 
-import { toString, filter, contains, toLower, head, toUpper, tail, pathOr, map, append, merge, without } from 'ramda'
+import { contains, head, pathOr, map, append, merge, without } from 'ramda'
 
 
 
@@ -35,11 +35,7 @@ const updatePlayer = (updatedPlayer, idToken) => {
 const GameCard = function (props) {
 
   const basicPlayerInfo = {
-    _id: props.player._id,
-    picture: props.player.picture,
-    shortName: `${props.player.firstName} ${head(props.player.lastName)}`,
-    firstName: props.player.firstName,
-    lastName: props.player.lastName
+    _id: props.player._id
   }
 
   const updatedGameWithPlayer = merge(props.game, {currentPlayers: append(basicPlayerInfo, props.game.currentPlayers)})
@@ -50,12 +46,14 @@ const GameCard = function (props) {
 
 
   const mapFunctionForCurrentPlayers = function (player) {
+    let shortName = `${player.firstName} ${head(player.lastName)}.`
+
     return (
         <div key={`${player._id}`} className="dib">
           <article className="fl mw4 mh4 center bg-white br3 pa2 ba b--black-10 hover-bg-gold hover-black">
             <div className="tc">
               <img src={player.picture ? player.picture : "http://lorempixel.com/400/200/people"} className="br-100 w3 h3 dib ba b--black-10 " title="Player Avatar if available or Random Sports Image" />
-              <div className="athelas f6 fw3">{player.shortName}</div>
+              <div className="athelas f6 fw3">{shortName}</div>
             </div>
           </article>
         </div>
@@ -83,12 +81,16 @@ const GameCard = function (props) {
 
         <div className="flex items-center pt2 pb2 bg-gold bt b--gray ">
          <span className="athelas lh-title ttu tracked fw1 ml3">Organizer:</span>
-         <span className="avenir lh-title tracked fw4 ml3">{props.game.gameCreator.firstName + " " + head(`${props.game.gameCreator.lastName}.`)}</span>
+         <span className="avenir lh-title tracked fw4 ml3">
+          {pathOr('Error Loading', ['gameCreator', 'firstName'], props.game) + " " + head(pathOr('', ['gameCreator', 'lastName'], props.game))}
+        </span>
         </div>
 
         <div className="flex items-center pt3 pb3 bg-gold b--gray bb ">
           <span className="athelas lh-title ttu tracked fw1 ml3">Contact:</span>
-          <span className="avenir lh-title fw4 tracked ml3">{props.game.gameCreator.phone}</span>
+          <span className="avenir lh-title fw4 tracked ml3">
+            {pathOr('Error Loading Phone#', ['gameCreator', 'phone'], props.game)}
+          </span>
         </div>
 
 <div className="avenir ttu tracked">
@@ -137,10 +139,8 @@ const GameCard = function (props) {
     <div>
       <div className="mv1 mv0-ns fl w-100 w-50-ns tc"
         onClick={e => {
-
                 props.removePlayerFromGame(props.history, updatedGameRemovingPlayer, props.auth.idToken)
                 props.removeGameFromPlayer(props.history, updatedPlayerRemovingGame, props.auth.idToken)
-
           }}
           >
           <div className="pointer hover-dark-red pt1-ns mt1-ns mr1-ns br2-ns f4 white-90 lh-title bg-black-80">LEAVE GAME</div>
@@ -228,11 +228,7 @@ const MapActionsToProps = function (dispatch) {
   return {
     updateGameWithNewPlayer: (history, updatedGameWithPlayer, idToken, player) => {
       const basicPlayerInfo = {
-        _id: player._id,
-        picture: player.picture,
-        shortName: `${player.firstName} ${head(player.lastName)}`,
-        firstName: player.firstName,
-        lastName: player.lastName
+        _id: player._id
       }
 
         updateGame(updatedGameWithPlayer, idToken)

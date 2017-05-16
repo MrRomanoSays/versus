@@ -1,7 +1,5 @@
 import React from 'react'
 
-import ButtonLeft from './button-back'
-
 const View = function (props) {
   return (
 

@@ -83,6 +83,21 @@ function updatePlayer(player, cb) {
     })
 }
 
+//Get all the players that have joined a specific game by passing that game's unique _id
+function listEveryGameForEveryPlayer(gameId, cb) {
+  db.query('allGamesForEveryPlayer', {
+    include_docs: true,
+    keys: [gameId]
+  }, function(err, res) {
+    if (err) return cb(err)
+    cb(null, map(returnDoc, res.rows))
+  })
+}
+
+
+
+
+
 /////////////////////////
 ////  HELPER FUNCTIONS
 ////////////////////////
@@ -99,6 +114,7 @@ const dal = {
     addGame: addGame,
     getGame: getGame,
     updateGame: updateGame,
+    listEveryGameForEveryPlayer: listEveryGameForEveryPlayer,
     getPlayers: getPlayers,
     getPlayer: getPlayer,
     addPlayer: addPlayer,
