@@ -62,7 +62,7 @@ class Dashboard extends React.Component {
             player={this.props.player}
             playerAvatar={this.props.user.picture}
             loadCreatorDetails={ (player) => (e) => {
-              this.props.dispatch({ type: "SET_GAME_CREATOR", payload: player })
+              //this.props.dispatch({ type: "SET_GAME_CREATOR", payload: player })
               this.props.dispatch({ type: "SET_PREFERRED_CONTACT", payload: player.phone })
               this.props.dispatch({ type: "SET_CURRENT_PLAYER", payload: player })
             }}

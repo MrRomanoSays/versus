@@ -264,7 +264,7 @@ const game = (
 
     case SET_GAME_ID_TO_STATE:
       return merge(state, {_id: action.payload })
-    
+
     case SET_GAME_CREATED:
       return merge(state, {created: action.payload })
     case SET_GAME_CREATOR:

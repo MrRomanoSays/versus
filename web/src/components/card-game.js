@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import moment from 'moment'
 import 'font-awesome/css/font-awesome.css'
 
-import { contains, head, pathOr, map, append, merge, without } from 'ramda'
+import { contains, head, path, pathOr, map, append, merge, without } from 'ramda'
 
 
 
@@ -34,9 +34,7 @@ const updatePlayer = (updatedPlayer, idToken) => {
 
 const GameCard = function (props) {
 
-  const basicPlayerInfo = {
-    _id: props.player._id
-  }
+  const basicPlayerInfo = props.player._id
 
   const updatedGameWithPlayer = merge(props.game, {currentPlayers: append(basicPlayerInfo, props.game.currentPlayers)})
   const updatedPlayer = merge(props.player, {myGames: append(props.game._id, props.player.myGames)})
@@ -46,14 +44,12 @@ const GameCard = function (props) {
 
 
   const mapFunctionForCurrentPlayers = function (player) {
-    let shortName = `${player.firstName} ${head(player.lastName)}.`
-
     return (
-        <div key={`${player._id}`} className="dib">
+        <div key={`${path(['_id'], player)}`} className="dib">
           <article className="fl mw4 mh4 center bg-white br3 pa2 ba b--black-10 hover-bg-gold hover-black">
             <div className="tc">
-              <img src={player.picture ? player.picture : "http://lorempixel.com/400/200/people"} className="br-100 w3 h3 dib ba b--black-10 " title="Player Avatar if available or Random Sports Image" />
-              <div className="athelas f6 fw3">{shortName}</div>
+              <img src={path(['picture'], player) ? path(['picture'], player) : "http://lorempixel.com/400/200/people"} className="br-100 w3 h3 dib ba b--black-10 " title="Player Avatar if available or Random Sports Image" />
+              <div className="athelas f6 fw3">{`${path(['firstName'], player)} ${head(path(['lastName'], player))}.`}</div>
             </div>
           </article>
         </div>
@@ -82,14 +78,14 @@ const GameCard = function (props) {
         <div className="flex items-center pt2 pb2 bg-gold bt b--gray ">
          <span className="athelas lh-title ttu tracked fw1 ml3">Organizer:</span>
          <span className="avenir lh-title tracked fw4 ml3">
-          {pathOr('Error Loading', ['gameCreator', 'firstName'], props.game) + " " + head(pathOr('', ['gameCreator', 'lastName'], props.game))}
+          {pathOr('Loading...', ['gameCreator', 'firstName'], props.game) + " " + head(pathOr('', ['gameCreator', 'lastName'], props.game))}
         </span>
         </div>
 
         <div className="flex items-center pt3 pb3 bg-gold b--gray bb ">
           <span className="athelas lh-title ttu tracked fw1 ml3">Contact:</span>
           <span className="avenir lh-title fw4 tracked ml3">
-            {pathOr('Error Loading Phone#', ['gameCreator', 'phone'], props.game)}
+            {path(['gameCreator', 'phone'], props.game)}
           </span>
         </div>
 
@@ -161,9 +157,10 @@ const GameCard = function (props) {
 
     <div className="mv1 mv0-ns fl w-100 tc"
       onClick={e => {
-        if (!contains(basicPlayerInfo._id, props.game.currentPlayers)) {
+        if (!contains(basicPlayerInfo, props.game.currentPlayers)) {
             props.updateGameWithNewPlayer(props.history, updatedGameWithPlayer, props.auth.idToken, props.player)
             props.updatePlayerWithNewGame(updatedPlayer, props.game._id, props.auth.idToken)
+            props.updateStateWithCurrentPlayer(updatedPlayer)
         }
       }}
     >
@@ -195,8 +192,7 @@ const GameCard = function (props) {
 </div>
 
       <header className="avenir fw4 ttu tracked f5 lh-copy measure b">Current Roster:</header>
-          <div>{map(mapFunctionForCurrentPlayers)(props.game.currentPlayers)}</div>
-
+          <div>{map(mapFunctionForCurrentPlayers)(path(['currentPlayers'], props.game))}</div>
       </header>
 
       <div className="fn fl-ns w-50-ns">
@@ -249,7 +245,6 @@ const MapActionsToProps = function (dispatch) {
       .then(res => res.json())
       .then(res => {
         if (res.id) {
-          console.log(res)
           dispatch({ type: "SET_REV_OF_UPDATED_PLAYER", payload: res.rev})
 
           dispatch({ type: "SET_GAME_TO_MY_GAMES", payload: gameId})
@@ -286,7 +281,11 @@ const MapActionsToProps = function (dispatch) {
           }
         })
         .catch(err => console.log(err.message))
-      }
+      },
+
+    updateStateWithCurrentPlayer: (updatedPlayer) => {
+      dispatch({ type: "SET_CURRENT_PLAYER", payload: updatedPlayer})
+    }
 
   }
 }

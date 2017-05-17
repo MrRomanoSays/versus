@@ -3,6 +3,8 @@ import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
 import fetch from 'isomorphic-fetch'
 
+import { path, split } from 'ramda'
+
 import NavBarLoggedIn from '../components/navigation-bar-loggedIn'
 import LoggedOutQue from '../components/logged-out-que'
 
@@ -12,8 +14,14 @@ import GameCard from '../components/card-game'
 class GameView extends React.Component {
   componentDidMount () {
 
-    //GET to DB for game details (not including game creator)
-    fetch(`http://localhost:8080/games/${this.props.match.params.id}`, {
+    const gameIdFromURL = this.props.match.params.id
+    const splitUrlString = split('_', gameIdFromURL)
+    const gameCreatorId = `${splitUrlString[2]}_${splitUrlString[3]}`
+
+
+    //GET to DB for game details
+
+    fetch(`http://localhost:8080/games/${path(['match', 'params', 'id'], this.props)}`, {
      headers: {
        "Content-Type": "application/json",
        Authorization: 'Bearer ' + this.props.auth.idToken
@@ -21,11 +29,12 @@ class GameView extends React.Component {
      method: "GET"
      })
      .then(res => res.json())
-     .then(res => res._id ? this.props.dispatch({ type: "SET_GAME_FROM_DATABASE", payload: res }) : null )
+     .then(res => res ? this.props.dispatch({ type: "SET_GAME_FROM_DATABASE", payload: res }) : null )
      .catch(err => console.log(err))
 
+
      //GET to DB for game creator
-     fetch(`http://localhost:8080/players/${this.props.player._id}`, {
+     fetch(`http://localhost:8080/players/${gameCreatorId}`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: 'Bearer ' + this.props.auth.idToken
@@ -35,6 +44,7 @@ class GameView extends React.Component {
       .then(res => res.json())
       .then(res => res ? this.props.dispatch({ type: "SET_GAME_CREATOR", payload: res }) : null )
       .catch(err => console.log(err))
+
 
      //GET to DB for all players that have joined this game (includes game creator)
      fetch(`http://localhost:8080/allGamesForEveryPlayer/${this.props.match.params.id}`, {
@@ -59,7 +69,7 @@ class GameView extends React.Component {
           player={this.props.player}
           playerAvatar={this.props.user.picture}
           loadCreatorDetails={ (player) => (e) => {
-            this.props.dispatch({ type: "SET_GAME_CREATOR", payload: player })
+            //this.props.dispatch({ type: "SET_GAME_CREATOR", payload: player })
             this.props.dispatch({ type: "SET_PREFERRED_CONTACT", payload: player.phone })
             this.props.dispatch({ type: "SET_CURRENT_PLAYER", payload: player })
           }}
